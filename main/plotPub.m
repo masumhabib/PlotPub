@@ -1,6 +1,40 @@
 function h = plotPub(X, Y, N, opt)
 % function h = plotPub(X, Y, N, opt)
-
+% Publication quality plot in MATLAB
+% Parameters:
+% X:   cell array of x coordinates
+% Y:   cell array of y coordinates
+% N:   number of plots to be created. N <= length(X) 
+% opt: options structure:
+% BoxDim:       vector [width, height]: size of the axes box in inches; default: [6, 2.5]
+% FontName:     string: font name; default: 'Arial'
+% FontSize:     integer; default: 20
+% LineWidth:    vector [width1, width2, ..]: element i changes the property of i-th dataset; default: 2
+% LineStyle:    cell array {'style1', 'style2', ..}: element i changes the property of i-th dataset; default: '-'
+% Colors:       3xN matrix, [red, green, blue] where N is the number of datasets.
+% XTick:        [tick1, tick2, ..]: major ticks for X axis.
+% YTick:        [tick1, tick2, ..]: major ticks for Y axis.
+% XLim:         [min, max]: X axis limit.
+% YLim:         [min, max]: Y axis limit.
+% XScale:       'linear' or 'log': X axis scale.
+% YScale:       'linear' or 'log': Y axis scale.
+% XGrid:        'on' or 'off': show grid in X axis?
+% YGrid:        'on' or 'off': show grid in Y axis?
+% XDir:         'in' or 'out': X axis tick direction
+% YDir:         'in' or 'out': Y axis tick direction
+% XMinorTick:   'on' or 'off': show X minor tick?
+% YMinorTick:   'on' or 'off': show Y minor tick?
+% Legend:       {'legend1','legend2',...}
+% LegendLoc:    'NorthEast', ..., 'SouthWest': legend location
+% XLabel:       X axis label
+% YLabel:       Y axis label
+% FileName:     Save? Give a file name.
+%
+% Written by: K M Masum Habib (http://masumhabib.com)
+% Copyright (c) K M Masum Habib 2012-2013.
+% Distributed under the BSD License.
+%
+%
 if nargin < 4
     fprintf('Usage: function h = plotPub(X, Y, N, opt)');
 end
@@ -14,7 +48,7 @@ end
 BoxPos = [1, 1, BoxDim(1), BoxDim(2)];
 
 %font
-FontName = 'Arial';
+FontName = 'Helvetica';
 if isfield(opt, 'FontName')
     FontName = opt.FontName;
 end
@@ -35,15 +69,15 @@ if isfield(opt, 'LineStyle')
     LineStyle = opt.LineStyle;
 end
 Colors = [
-      0.10,     0.50,    1.00;
-      1.00,     0.10,    0.10;
-      0.25,     0.70,    0.10;
-      0.90,     0.90,    0.10;
-      0.25,     0.25,    0.25;
+      0.16,     0.44,    1.00;
+      0.93,     0.00,    0.00;
+      0.00,     0.57,    0.00;
+      0.17,     0.17,    0.17;
+      0.44,     0.00,    0.99;
       1.00,     0.50,    0.10;
       0.75,     0.00,    0.75;
-      0.25,     0.25,    0.25;
       0.50,     0.50,    0.50;
+      0.50,     0.57,    0.00;
       0.00,     0.00,    0.00;
       ];
 if isfield(opt, 'Colors')
