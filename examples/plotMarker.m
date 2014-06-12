@@ -2,7 +2,7 @@ clear all;
 
 
 % load previously generated fig file
-figFile = 'loadFigMultiple.fig';
+figFile = 'multiple.fig';
 open(figFile)
 
 
@@ -26,7 +26,7 @@ opt.MarkerSpacing = [10, 10, 10];
 opt.Legend = {'\theta = 0^o', '\theta = 45^o', '\theta = 90^o'}; % legends
 
 % Save? comment the following line if you do not want to save
-opt.FileName = 'loadFigMarkers.eps'; 
+opt.FileName = 'plotMarkers.png'; 
 
 % create the plot
 setPlotProp(opt);

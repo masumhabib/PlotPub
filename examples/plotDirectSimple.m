@@ -1,4 +1,4 @@
-%% Directly plots a simple figure using plotPub function.
+% Directly plots a simple figure using plotPub function.
 
 clear all;
 addpath('../lib');

@@ -1,4 +1,4 @@
-% Load, modify and export a fig file as an eps file.
+% Set line style, line width, and color.
 
 clear all;
 addpath('../lib');
@@ -10,9 +10,12 @@ open(figFile)
 %% plot now
 opt.XLabel = 'Time, t (ms)'; % xlabel
 opt.YLabel = 'Voltage, V (V)'; %ylabel
+opt.Colors = [0, 0, 0]; % change plot color
+opt.LineWidth = 1; % line width
+opt.LineStyle = {':'}; % line style
 
 % Save? comment the following line if you do not want to save
-opt.FileName = 'plotSimple1.eps'; 
+opt.FileName = 'plotLineStyle.eps'; 
 
 % create the plot
 setPlotProp(opt);

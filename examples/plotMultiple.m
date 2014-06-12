@@ -1,4 +1,7 @@
+% Multiple plots using plotPub
+
 clear all;
+addpath('../lib');
 
 %% lets plot 3 cycles of 50Hz AC voltage
 f = 50;
@@ -26,7 +29,7 @@ opt.YTick = [-10, 0, 10];
 opt.YLim = [-11, 11];
 
 % Save? comment the following line if you do not want to save
-opt.FileName = 'plotVoltMultiple.eps'; 
+opt.FileName = 'plotMultiple.tiff'; 
 
 % create the plot
 plotPub(plotx, ploty, 3, opt);

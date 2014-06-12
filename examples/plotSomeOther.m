@@ -1,4 +1,5 @@
 clear all;
+addpath('../lib');
 
 %% lets plot 3 cycles of 50Hz AC voltage
 f = 50;

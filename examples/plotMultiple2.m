@@ -1,4 +1,8 @@
+% Multiple plots using setPlotProp. Sets color, legend, line style, tick
+% etc.
+
 clear all;
+addpath('../lib');
 
 %% lets plot 3 cycles of 50Hz AC voltage
 f = 50;
@@ -12,17 +16,14 @@ v1 = Vm*sin(th);
 v2 = Vm*sin(th - phi);
 v3 = Vm*sin(th - phi*2);
 
-%% plot now
-% data set 1
-plotx{1} = t*1E3; %convert time in ms and create a cell array
-ploty{1} = v1; % assign v to a cell array
-% data set 2
-plotx{2} = t*1E3; %convert time in ms and create a cell array
-ploty{2} = v2; % assign v to a cell array
-% data set 3
-plotx{3} = t*1E3; %convert time in ms and create a cell array
-ploty{3} = v3; % assign v to a cell array
+figure;
+plot(t*1E3, v1);
+hold on;
+plot(t*1E3, v2);
+plot(t*1E3, v3);
+hold off;
 
+%% change properties
 opt.XLabel = 'Time, t (ms)'; % xlabel
 opt.YLabel = 'Voltage, V (V)'; %ylabel
 opt.YTick = [-10, 0, 10]; %[tick1, tick2, .. ]
@@ -40,8 +41,8 @@ opt.LineStyle = {'-', ':', '--'}; % three line styles
 opt.Legend = {'\phi = 0^o', '\phi = 45^o', '\phi = 90^o'}; % legends
 
 % Save? comment the following line if you do not want to save
-opt.FileName = 'plotVoltMultiple2.jpg'; 
+opt.FileName = 'plotMultiple2.eps'; 
 
 % create the plot
-plotPub(plotx, ploty, 3, opt);
+setPlotProp(opt);
     

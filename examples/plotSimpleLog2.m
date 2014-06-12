@@ -1,4 +1,7 @@
+% Log scale with custom tick.
+
 clear all;
+addpath('../lib');
 
 %% lets plot 3 cycles of 50Hz AC voltage
 f = 50;
@@ -22,7 +25,7 @@ opt.YTick = [1E-3, 1E-1, 1E1, 1E3]; %[tick1, tick2, .. ]
 opt.YGrid = 'on'; % 'on' or 'off'
 
 % Save? comment the following line if you do not want to save
-opt.FileName = 'plotVoltSimpleLogScale2.eps'; 
+opt.FileName = 'plotSimpleLog2.eps'; 
 
 % create the plot
 plotPub(plotx, ploty, 1, opt);
