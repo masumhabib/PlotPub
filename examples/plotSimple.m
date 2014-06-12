@@ -1,4 +1,5 @@
 clear all;
+addpath('../lib');
 
 %% lets plot 3 cycles of 50Hz AC voltage
 f = 50;
@@ -17,7 +18,7 @@ opt.XLabel = 'Time, t (ms)'; % xlabel
 opt.YLabel = 'Voltage, V (V)'; %ylabel
 
 % Save? comment the following line if you do not want to save
-opt.FileName = 'plotVolt1.eps'; 
+opt.FileName = 'plotSimple1.eps'; 
 
 % create the plot
 plotPub(plotx, ploty, 1, opt);

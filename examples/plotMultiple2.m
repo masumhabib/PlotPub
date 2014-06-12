@@ -40,7 +40,7 @@ opt.LineStyle = {'-', ':', '--'}; % three line styles
 opt.Legend = {'\phi = 0^o', '\phi = 45^o', '\phi = 90^o'}; % legends
 
 % Save? comment the following line if you do not want to save
-opt.FileName = 'plotVoltMultiple2.eps'; 
+opt.FileName = 'plotVoltMultiple2.jpg'; 
 
 % create the plot
 plotPub(plotx, ploty, 3, opt);
