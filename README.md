@@ -25,7 +25,6 @@ In version 1.2, I introduced a new function <code>setPlotProp</code> which is su
 <hr />
 <ul>
 	<li><a href="https://github.com/masumhabib/plotPub/archive/master.zip">Compressed package</a></li>
-	<li><a href="https://github.com/masumhabib/plotPub">GitHub repository</a></li>
 </ul>
 
 <h4>Installation</h4>
@@ -37,6 +36,6 @@ addpath('D:/MATLAB/plotPub-master');
 [/matlab]
 where, I assume that you put plotPub-master in <code>D:/MATLAB</code> folder. The sample codes can be found inside the <code>examples</code> folder.
 
-<h4>Installation</h4>
+<h4>Documentation</h4>
 <hr />
 Please see the <a href="http://masumhabib.com/publication-quality-graphs-matlab">project page</a>.
