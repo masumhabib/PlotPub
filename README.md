@@ -1,20 +1,42 @@
-plotPub
+PlotPub
 =======
 
 <h4>Publication quality graphs in MATLAB.</h4>
 
-MATLAB is an excellent tool. It is equally popular among students, researchers and professionals. If you use MATLAB for your project/research, you probably know that it is not easy to create publication quality graphs (PQGs) using MATLAB. You will have to call a billion functions to create a decent plot, fix its height and width, set fonts and font sizes, fix line width and color etc. There are some nice<a href="http://blogs.mathworks.com/loren/2007/12/11/making-pretty-graphs/">tutorials</a> and <a href="http://www.mathworks.com/matlabcentral/fileexchange/31668-publication-quality-plots">codes</a> available for creating PQGs. However, most of those do not meet the level of reusability and flexibility I want. 
+MATLAB is an excellent tool. It is equally popular among students, researchers and professors. If you use MATLAB for your project/research, you probably know that it is not easy to create publication quality graphs (PQGs) using MATLAB. You will have to call a billion <code>set</code> and <code>get</code> functions to create a decent plot with desired height, width, fonts, line width, color etc. Here, I present PlotPub which is a set of MATLAB functions that allows you to modify almost all aspects of MATLAB figures and export PQGs using one function call and a simple structure.
 
-<h4> Code </h4>
-The main code is just one function, plotPub. I have also prepared some example codes. These codes produce publication quality <code>eps</code> files. <code>EPS</code> is a vector graphics format, compatible with LaTex and can be modified using vector graphics editors such as <a href="http://inkscape.org/">Inkscape</a> and <a href="http://www.adobe.com/products/illustrator.html">Adobe Illustrator</a>.
+<h4>Features of v1.2</h4>
+<hr />
+<ul>
+	<li>Generate beautiful, publication quality graphs from instantly generated MATLAB figures or saved MATLAB fig files.</li>
+	<li>Export figures in EPS, PDF, JPEG, PNG and TIFF with adjustable resolution.</li>
+	<li>Set marker spacing.</li>
+	<li>Change almost all aspects of a figure using simple and intuitive code.</li>
+	<li>A lot of example codes. A decent tutorial and good documentation.</li>
+	<li>Tested in Ubuntu and OSX with MATLAB 7.10. But it should work in other operating systems with other versions of MATLAB.</li>
+	<li>Distributed under BSD license which allows you to do anything you like.</li>
+</ul>
 
-To fix some issues with MATLAB post script line styles, I have used fixPSlinestyle function availabe in <a href="http://www.mathworks.com/matlabcentral/fileexchange/17928-fixpslinestyle">MATLAB Central</a>.
+<h4> Compatibility with v1.1</h4>
+<hr />
+In version 1.2, I introduced a new function <code>setPlotProp</code> which is superior to the old function <code>plotPub</code>. But for backward compatibility, <code>plotPub</code> is still available in v1.2. Therefore, all of your previous codes should work with v1.2.
 
-I have tested these codes under Ubuntu 12.04 in MATLAB 7.10. But it should work under Windows and Mac OSX with other MATLAB versions as well.
-
-All the codes provided here are distributed under BSD license which basically allows you to do anything you like. You can use, modify and/or redistribute it for free or for some cash and become a millionaire :D.
+<h4>Downloads</h4>
+<hr />
+<ul>
+	<li><a href="https://github.com/masumhabib/plotPub/archive/master.zip">Compressed package</a></li>
+	<li><a href="https://github.com/masumhabib/plotPub">GitHub repository</a></li>
+</ul>
 
 <h4>Installation</h4>
-In order to use the <code>plotPub</code> function you have to copy <code>plotPub.m</code> and <code>fixPSlinestyle.m</code> files to either your MATLAB path or your current working folder.
+<hr />
+Download and extract the zip file from the link given above. Install PlotPub using any one of the three possible ways: (1) copy all the *.m files inside the <code>lib</code> folder to either your MATLAB path or (2) copy those files to your current project folder or (3) put plotPub-master in any convenient folder and add the following line in your MATLAB code:
 
-For more informaion and see <a href="http://masumhabib.com/publication-quality-graphs-matlab/">the project page</a>.
+[matlab]
+addpath('D:/MATLAB/plotPub-master');
+[/matlab]
+where, I assume that you put plotPub-master in <code>D:/MATLAB</code> folder. The sample codes can be found inside the <code>examples</code> folder.
+
+<h4>Installation</h4>
+<hr />
+Please see the <a href="http://masumhabib.com/publication-quality-graphs-matlab">project page</a>.

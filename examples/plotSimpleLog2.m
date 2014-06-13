@@ -25,7 +25,7 @@ opt.YTick = [1E-3, 1E-1, 1E1, 1E3]; %[tick1, tick2, .. ]
 opt.YGrid = 'on'; % 'on' or 'off'
 
 % Save? comment the following line if you do not want to save
-opt.FileName = 'plotSimpleLog2.eps'; 
+opt.FileName = 'plotSimpleLog2.png'; 
 
 % create the plot
 plotPub(plotx, ploty, 1, opt);

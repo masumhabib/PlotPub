@@ -1,12 +1,15 @@
 function h = plotPub(X, Y, N, opt)
 % function h = plotPub(X, Y, N, opt)
-% Publication quality plot in MATLAB
+% This function plots X{i} vs Y{i}, changes the properties of the generated 
+% figure and exports it as a publication quality image file. The resolution 
+% of the image can be chosen by the user. Supported image formats are EPS, 
+% PDF, PNG, JPEG and TIFF. The figure properties are specified by the 
+% options structure 'opt'. 
 %
 % Parameters:
 % X:   cell array of x coordinates
 % Y:   cell array of y coordinates
 % N:   number of plots to be created. N <= length(X) 
-%
 % opt: options structure:
 %   BoxDim:       vector [width, height]: size of the axes box in inches; default: [6, 2.5]
 %   FontName:     string: font name; default: 'Arial'
@@ -41,10 +44,16 @@ function h = plotPub(X, Y, N, opt)
 %   ZLabel:       Z axis label
 %   Resolution:   Resolution (dpi) for bitmapped file. Default:600.
 %   FileName:     Save? Give a file name.
+% 
+% hfig:         Figure handle (optional). Default: current figure.
+%
 %
 % Written by: K M Masum Habib (http://masumhabib.com)
 % Copyright (c) K M Masum Habib 2012-2014.
+%
 % Distributed under the BSD License.
+%
+% Version: 1.2
 %
 
 if nargin ~= 4

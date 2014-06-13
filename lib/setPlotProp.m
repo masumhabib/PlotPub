@@ -1,6 +1,10 @@
 function h = setPlotProp(opt, hfig)
 % function h = setPlotProp(opt, hfig)
-% Publication quality plot in MATLAB
+% This function changes the properties of the figure represented by 'hfig'
+% and exports it as a publication quality image file. The resolution of 
+% the image can be chosen by the user. Supported image formats are EPS, 
+% PDF, PNG, JPEG and TIFF. The figure properties are specified by the 
+% options structure 'opt'. 
 %
 % Parameters:
 % opt: options structure:
@@ -37,11 +41,16 @@ function h = setPlotProp(opt, hfig)
 %   ZLabel:       Z axis label
 %   Resolution:   Resolution (dpi) for bitmapped file. Default:600.
 %   FileName:     Save? Give a file name.
-%   hfig:         Figure handle (optional). Default: current figure.
+% 
+% hfig:         Figure handle (optional). Default: current figure.
+%
 %
 % Written by: K M Masum Habib (http://masumhabib.com)
 % Copyright (c) K M Masum Habib 2012-2014.
+%
 % Distributed under the BSD License.
+%
+% Version: 1.2
 %
 if nargin < 1 || nargin > 2
     fprintf('Usage: function h = setPlotProp(opt, hfig)');

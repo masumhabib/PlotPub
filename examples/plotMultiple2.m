@@ -38,10 +38,10 @@ opt.Colors = [ % three colors for three data set
 
 opt.LineWidth = [2, 1, 1]; % three line widths
 opt.LineStyle = {'-', ':', '--'}; % three line styles
-opt.Legend = {'\phi = 0^o', '\phi = 45^o', '\phi = 90^o'}; % legends
+opt.Legend = {'\theta = 0^o', '\theta = 45^o', '\theta = 90^o'}; % legends
 
 % Save? comment the following line if you do not want to save
-opt.FileName = 'plotMultiple2.eps'; 
+opt.FileName = 'plotMultiple2.png'; 
 
 % create the plot
 setPlotProp(opt);
