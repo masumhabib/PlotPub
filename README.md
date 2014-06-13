@@ -24,7 +24,7 @@ In version 1.2, I introduced a new function <code>setPlotProp</code> which is su
 <h4>Downloads</h4>
 <hr />
 <ul>
-	<li><a href="https://github.com/masumhabib/plotPub/archive/master.zip">Compressed package</a></li>
+	<li><a href="https://github.com/masumhabib/PlotPub/archive/master.zip">Compressed package</a></li>
 </ul>
 
 <h4>Installation</h4>
