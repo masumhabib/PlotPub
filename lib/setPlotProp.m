@@ -40,6 +40,7 @@ function h = setPlotProp(opt, hfig)
 %   YLabel:       Y axis label
 %   ZLabel:       Z axis label
 %   Resolution:   Resolution (dpi) for bitmapped file. Default:600.
+%   HoldLines:    true/false. true == only modify axes settings, do not touch plot lines/surfaces. Default false.
 %   FileName:     Save? Give a file name.
 % 
 % hfig:         Figure handle (optional). Default: current figure.
@@ -52,6 +53,7 @@ function h = setPlotProp(opt, hfig)
 %
 % Version: 1.2
 %
+
 if nargin < 1 || nargin > 2
     fprintf('Usage: function h = setPlotProp(opt, hfig)');
 elseif nargin == 1
@@ -71,11 +73,11 @@ hyl = get(haxis, 'YLabel');
 hzl = get(haxis, 'ZLabel');
 
 % initialize settings
-BoxDim = [6, 3]; 
+BoxDim = [6, 4]; 
 ShowBox = 'on';
 FontName = 'Helvetica';
-FontSize = 15;
-LineWidth = 2*ones(1, N);
+FontSize = 26;
+LineWidth = 4*ones(1, N);
 LineStyle = {};
 for ii = 1:N
     LineStyle{ii} = '-';
@@ -102,7 +104,9 @@ YMinorTick = 'on';
 ZMinorTick = 'on';
 
 Resolution = 600; % figure resolution for bitmapped file.
-AxisColor = [0.4 0.4 0.4]; % axis color
+HoldLines = false;
+AxisColor = [0.0 0.0 0.0]; % axis color
+AxisLineWidth = 2; % axis color
 
 % Figure properties
 % create figure window
@@ -185,45 +189,59 @@ if isfield(opt, 'Resolution')
     Resolution = opt.Resolution;
 end
 
-for ii=1:N   
-    if MarkerSpacing(ii) ~= 0
-        Marker = 'None';
-    else
-        Marker = Markers{ii};
-    end
-    set(hp(ii)          , ...
-      'LineStyle'       , LineStyle{ii}, ...
-      'Marker'          , Marker,...
-      'Color'           , Colors(ii,:), ...
-      'LineWidth'       , LineWidth(ii));
+if isfield(opt, 'HoldLines')
+    HoldLines = opt.HoldLines;
 end
 
-for ii = 1:N
-    if MarkerSpacing(ii) ~= 0
-        xdata = get(hp(ii),'XData');
-        ydata = get(hp(ii),'YData');
-        hold on;
-        hmarker = plot (xdata(1:MarkerSpacing(ii):end), ydata(1:MarkerSpacing(ii):end));
-        hfake = plot (xdata, ydata);
-        
-        set(hmarker, ...
-          'LineStyle'       , 'None', ...
-          'Marker'          , Markers{ii},...
-          'Color'           , Colors(ii,:), ...
-          'MarkerEdgeColor' , Colors(ii,:), ...
-          'MarkerFaceColor' , Colors(ii,:), ...
-          'LineWidth'       , LineWidth(ii));
+if isfield(opt, 'AxisColor')
+    AxisColor = opt.AxisColor;
+end
 
-      set(hfake, ...
+if isfield(opt, 'AxisLineWidth')
+    AxisLineWidth = opt.AxisLineWidth;
+end
+
+if HoldLines == false
+    for ii=1:N   
+        if MarkerSpacing(ii) ~= 0
+            Marker = 'None';
+        else
+            Marker = Markers{ii};
+        end
+        set(hp(ii)          , ...
           'LineStyle'       , LineStyle{ii}, ...
-          'Marker'          , Markers{ii},...
+          'Marker'          , Marker,...
           'Color'           , Colors(ii,:), ...
-          'MarkerEdgeColor' , Colors(ii,:), ...
-          'MarkerFaceColor' , Colors(ii,:), ...
-          'LineWidth'       , LineWidth(ii),...
-          'Visible'         , 'off');
-      
-      hp(ii) = hfake;
+          'LineWidth'       , LineWidth(ii));
+    end
+
+    for ii = 1:N
+        if MarkerSpacing(ii) ~= 0
+            xdata = get(hp(ii),'XData');
+            ydata = get(hp(ii),'YData');
+            hold on;
+            hmarker = plot (xdata(1:MarkerSpacing(ii):end), ydata(1:MarkerSpacing(ii):end));
+            hfake = plot (xdata, ydata);
+
+            set(hmarker, ...
+              'LineStyle'       , 'None', ...
+              'Marker'          , Markers{ii},...
+              'Color'           , Colors(ii,:), ...
+              'MarkerEdgeColor' , Colors(ii,:), ...
+              'MarkerFaceColor' , Colors(ii,:), ...
+              'LineWidth'       , LineWidth(ii));
+
+            set(hfake, ...
+              'LineStyle'       , LineStyle{ii}, ...
+              'Marker'          , Markers{ii},...
+              'Color'           , Colors(ii,:), ...
+              'MarkerEdgeColor' , Colors(ii,:), ...
+              'MarkerFaceColor' , Colors(ii,:), ...
+              'LineWidth'       , LineWidth(ii),...
+              'Visible'         , 'off');
+
+            hp(ii) = hfake;
+        end
     end
 end
 
@@ -305,7 +323,7 @@ end
 set( haxis        , ...
     'Units'       , 'inches',...
     'FontName'    , FontName, ...
-    'FontSize'    , FontSize - 2,...
+    'FontSize'    , FontSize,...
     'Box'         , ShowBox     , ...
     'Color'       , 'none',...
     'TickDir'     , 'in'     , ...
@@ -319,7 +337,7 @@ set( haxis        , ...
     'XColor'      , AxisColor, ...
     'YColor'      , AxisColor, ...
     'ZColor'      , AxisColor, ...
-    'LineWidth'   , 1);
+    'LineWidth'   , AxisLineWidth);
 
 % legend
 if isfield(opt, 'Legend')
@@ -329,10 +347,23 @@ else
     hLegend = legend();
 end
 
-set(hLegend, ...
-    'Box'       , 'off',...
-    'Color'     , 'none',...
-    'TextColor' , [0 0 0]);
+if isfield(opt, 'LegendBox')
+    set(hLegend, 'Box'       , opt.LegendBox);
+else
+    set(hLegend, 'Box'       , 'off');
+end
+
+if isfield(opt, 'LegendBoxColor')
+    set(hLegend, 'Color'       , opt.LegendBoxColor);
+else
+    set(hLegend, 'Color'       , 'none');
+end
+
+if isfield(opt, 'LegendTextColor')
+    set(hLegend, 'TextColor'       , opt.LegendBoxColor);
+else
+    set(hLegend, 'TextColor'       , [0 0 0]);
+end
 
 if isfield(opt, 'LegendLoc')
     set(hLegend,...
@@ -341,7 +372,7 @@ end
 
 if isfield(opt, 'FontSize')
     set(hLegend,...
-        'FontSize'  , opt.FontSize - 4);
+        'FontSize'  , opt.FontSize);
 end
 
 

@@ -43,6 +43,7 @@ function h = plotPub(X, Y, N, opt)
 %   YLabel:       Y axis label
 %   ZLabel:       Z axis label
 %   Resolution:   Resolution (dpi) for bitmapped file. Default:600.
+%   HoldLines:    true/false. true == only modify axes settings, do not touch plot lines/surfaces. Default false.
 %   FileName:     Save? Give a file name.
 % 
 % hfig:         Figure handle (optional). Default: current figure.
