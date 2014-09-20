@@ -31,9 +31,9 @@ In version 1.2, I introduced a new function <code>setPlotProp</code> which is su
 <hr />
 Download and extract the zip file from the link given above. Install PlotPub using any one of the three possible ways: (1) copy all the *.m files inside the <code>lib</code> folder to either your MATLAB path or (2) copy those files to your current project folder or (3) put plotPub-master in any convenient folder and add the following line in your MATLAB code:
 
-<code> addpath('D:/MATLAB/plotPub-master');</code>
+<code> addpath('D:/MATLAB/PlotPub-master');</code>
 
-where, I assume that you put plotPub-master in <code>D:/MATLAB</code> folder. The sample codes can be found inside the <code>examples</code> folder.
+where, I assume that you put PlotPub-master in <code>D:/MATLAB</code> folder. The sample codes can be found inside the <code>examples</code> folder.
 
 <h4>Documentation</h4>
 <hr />
