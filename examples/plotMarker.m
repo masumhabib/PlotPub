@@ -19,9 +19,9 @@ opt.Colors = [ % three colors for three data set
     0,      0,       1;
     ];
 
-opt.LineWidth = [1, 1, 1]; % three line widths
-opt.LineStyle = {'-', '-', '--'}; % three line styles
-opt.Markers = {'o', '', '*'};
+opt.LineWidth = [2, 2, 2]; % three line widths
+opt.LineStyle = {'-', '-', '-'}; % three line styles
+opt.Markers = {'o', '', 's'};
 opt.MarkerSpacing = [15, 15, 15];
 opt.Legend = {'\theta = 0^o', '\theta = 45^o', '\theta = 90^o'}; % legends
 

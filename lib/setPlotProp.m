@@ -9,16 +9,27 @@ function h = setPlotProp(opt, hfig)
 % Parameters:
 % opt: options structure:
 %   BoxDim:       vector [width, height]: size of the axes box in inches; default: [6, 2.5]
+%   ShowBox:      'on' = show or 'off' = hide bounding box; default: 'on'
 %   FontName:     string: font name; default: 'Arial'
-%   FontSize:     integer; default: 20
+%   FontSize:     integer; default: 26
 %   LineWidth:    vector [width1, width2, ..]: element i changes the property of i-th dataset; default: 2
 %   LineStyle:    cell array {'style1', 'style2', ..}: element i changes the property of i-th dataset; default: '-'
 %   Markers:      cell array {'marker1', 'marker2', ..}: element i changes the property of i-th dataset; default: 'None'
 %   MarkerSpacing:vector [space1, space2, ..]: element i changes the property of i-th dataset; default: 0
 %   Colors:       3xN matrix, [red, green, blue] where N is the number of datasets.
+%   AxisColor:    [red, green, blue]; color of the axis lines; default: black
+%   AxisLineWidth:Witdth of the axis lines; default: 2
+%   XLabel:       X axis label
+%   YLabel:       Y axis label
+%   ZLabel:       Z axis label
 %   XTick:        [tick1, tick2, ..]: major ticks for X axis.
 %   YTick:        [tick1, tick2, ..]: major ticks for Y axis.
 %   ZTick:        [tick1, tick2, ..]: major ticks for Z axis.
+%   XMinorTick:   'on' or 'off': show X minor tick?
+%   YMinorTick:   'on' or 'off': show Y minor tick?
+%   ZMinorTick:   'on' or 'off': show Z minor tick?
+%   TickDir:      tick direction: 'in' or 'out'; default: 'in'
+%   TickLength:   tick length; default: [0.02, 0.02]
 %   XLim:         [min, max]: X axis limit.
 %   YLim:         [min, max]: Y axis limit.
 %   ZLim:         [min, max]: Z axis limit.
@@ -31,14 +42,11 @@ function h = setPlotProp(opt, hfig)
 %   XDir:         'in' or 'out': X axis tick direction
 %   YDir:         'in' or 'out': Y axis tick direction
 %   ZDir:         'in' or 'out': Z axis tick direction
-%   XMinorTick:   'on' or 'off': show X minor tick?
-%   YMinorTick:   'on' or 'off': show Y minor tick?
-%   ZMinorTick:   'on' or 'off': show Z minor tick?
 %   Legend:       {'legend1','legend2',...}
+%   LegendBox:    bounding box of legend: 'on'/'off'; default: 'off'
+%   LegendBoxColor: color of the bounding box of legend; default: 'none'
+%   LegendTextColor: color of the legend text; default: [0,0,0]
 %   LegendLoc:    'NorthEast', ..., 'SouthWest': legend location
-%   XLabel:       X axis label
-%   YLabel:       Y axis label
-%   ZLabel:       Z axis label
 %   Resolution:   Resolution (dpi) for bitmapped file. Default:600.
 %   HoldLines:    true/false. true == only modify axes settings, do not touch plot lines/surfaces. Default false.
 %   FileName:     Save? Give a file name.
@@ -51,7 +59,7 @@ function h = setPlotProp(opt, hfig)
 %
 % Distributed under the BSD License.
 %
-% Version: 1.2
+% Version: 1.3
 %
 
 if nargin < 1 || nargin > 2
@@ -73,11 +81,11 @@ hyl = get(haxis, 'YLabel');
 hzl = get(haxis, 'ZLabel');
 
 % initialize settings
-BoxDim = [6, 4]; 
+BoxDim = [6, 3]; 
 ShowBox = 'on';
-FontName = 'Helvetica';
-FontSize = 26;
-LineWidth = 4*ones(1, N);
+FontName = 'Arial';
+FontSize = 20;
+LineWidth = 2.5*ones(1, N);
 LineStyle = {};
 for ii = 1:N
     LineStyle{ii} = '-';
@@ -102,11 +110,13 @@ Colors = [
 XMinorTick = 'on';
 YMinorTick = 'on';
 ZMinorTick = 'on';
+TickDir = 'in';
+TickLength = [0.02, 0.02];
 
 Resolution = 600; % figure resolution for bitmapped file.
 HoldLines = false;
 AxisColor = [0.0 0.0 0.0]; % axis color
-AxisLineWidth = 2; % axis color
+AxisLineWidth = 1.5; % axis color
 
 % Figure properties
 % create figure window
@@ -220,23 +230,32 @@ if HoldLines == false
             xdata = get(hp(ii),'XData');
             ydata = get(hp(ii),'YData');
             hold on;
+            
+            % duplicate each plots twice:
+            % for marker
             hmarker = plot (xdata(1:MarkerSpacing(ii):end), ydata(1:MarkerSpacing(ii):end));
+            % for legend
             hfake = plot (xdata, ydata);
 
+            % remove any original markers
+            set(hp(ii), 'Marker', 'none');  
+            
             set(hmarker, ...
               'LineStyle'       , 'None', ...
               'Marker'          , Markers{ii},...
               'Color'           , Colors(ii,:), ...
-              'MarkerEdgeColor' , Colors(ii,:), ...
+              'MarkerEdgeColor' , 'none',... %Colors(ii,:), ...
               'MarkerFaceColor' , Colors(ii,:), ...
+              'MarkerSize'      , 3*LineWidth(ii), ...
               'LineWidth'       , LineWidth(ii));
 
             set(hfake, ...
               'LineStyle'       , LineStyle{ii}, ...
               'Marker'          , Markers{ii},...
               'Color'           , Colors(ii,:), ...
-              'MarkerEdgeColor' , Colors(ii,:), ...
+              'MarkerEdgeColor' , 'none',... %Colors(ii,:), ...
               'MarkerFaceColor' , Colors(ii,:), ...
+              'MarkerSize'      , 3*LineWidth(ii), ...
               'LineWidth'       , LineWidth(ii),...
               'Visible'         , 'off');
 
@@ -256,6 +275,24 @@ end
 if isfield(opt, 'ZTick')
     set( haxis , ...
     'ZTick'    , opt.ZTick);
+end
+
+if isfield(opt, 'XMinorTick')
+    XMinorTick = opt.XMinorTick;
+end
+if isfield(opt, 'YMinorTick')
+    YMinorTick = opt.YMinorTick;
+end
+if isfield(opt, 'ZMinorTick')
+    ZMinorTick = opt.ZMinorTick;
+end
+
+if isfield(opt, 'TickDir')
+    TickDir = opt.TickDir;
+end
+
+if isfield(opt, 'TickLength')
+    TickLength = opt.TickLength;
 end
 
 if isfield(opt, 'XLim')
@@ -326,8 +363,8 @@ set( haxis        , ...
     'FontSize'    , FontSize,...
     'Box'         , ShowBox     , ...
     'Color'       , 'none',...
-    'TickDir'     , 'in'     , ...
-    'TickLength'  , [.02 .02] , ...
+    'TickDir'     , TickDir     , ...
+    'TickLength'  , TickLength , ...
     'XMinorTick'  , XMinorTick, ...
     'YMinorTick'  , YMinorTick, ...
     'ZMinorTick'  , ZMinorTick, ...
@@ -360,7 +397,7 @@ else
 end
 
 if isfield(opt, 'LegendTextColor')
-    set(hLegend, 'TextColor'       , opt.LegendBoxColor);
+    set(hLegend, 'TextColor'       , opt.LegendTextColor);
 else
     set(hLegend, 'TextColor'       , [0 0 0]);
 end

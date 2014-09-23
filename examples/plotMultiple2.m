@@ -41,7 +41,7 @@ opt.LineStyle = {'-', ':', '--'}; % three line styles
 opt.Legend = {'\theta = 0^o', '\theta = 45^o', '\theta = 90^o'}; % legends
 
 % Save? comment the following line if you do not want to save
-opt.FileName = 'plotMultiple2.png'; 
+opt.FileName = 'plotMultiple2.eps'; 
 
 % create the plot
 setPlotProp(opt);

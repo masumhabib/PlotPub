@@ -30,7 +30,7 @@ opt.YTick = [-10, 0, 10];
 opt.YLim = [-11, 11];
 
 % Save? comment the following line if you do not want to save
-opt.FileName = 'plotMultiple.png'; 
+opt.FileName = 'plotMultiple.tiff'; 
 
 % create the plot
 setPlotProp(opt);
