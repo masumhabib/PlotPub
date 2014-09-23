@@ -360,7 +360,7 @@ else
 end
 
 if isfield(opt, 'LegendTextColor')
-    set(hLegend, 'TextColor'       , opt.LegendBoxColor);
+    set(hLegend, 'TextColor'       , opt.LegendTextColor);
 else
     set(hLegend, 'TextColor'       , [0 0 0]);
 end
