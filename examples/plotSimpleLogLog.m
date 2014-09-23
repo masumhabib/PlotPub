@@ -28,7 +28,7 @@ opt.YGrid = 'on'; % 'on' or 'off'
 opt.XGrid = 'on'; % 'on' or 'off'
 
 % Save? comment the following line if you do not want to save
-opt.FileName = 'plotSimpleLogLog.png'; 
+opt.FileName = 'plotSimpleLogLog.eps'; 
 
 % create the plot
 setPlotProp(opt);

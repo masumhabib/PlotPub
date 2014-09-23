@@ -23,7 +23,7 @@ opt.XLabel = 'Time, t (ms)'; % xlabel
 opt.YLabel = 'Voltage, V (V)'; %ylabel
 
 % Save? comment the following line if you do not want to save
-opt.FileName = 'plotSimple1.png'; 
+opt.FileName = 'plotSimple1.eps'; 
 
 % apply the settings
 setPlotProp(opt);
