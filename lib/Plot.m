@@ -61,19 +61,18 @@ classdef Plot < handle
             plot.FontSize        = 26;
             plot.LineWidth       = 4;
             plot.LineStyle       = '-'; 
-            plot.Markers         = 'None';
-            plot.Colors          = [
-                                    0.16,     0.44,    1.00;
-                                    0.93,     0.00,    0.00;
-                                    0.00,     0.57,    0.00;
-                                    0.17,     0.17,    0.17;
-                                    0.44,     0.00,    0.99;
-                                    1.00,     0.50,    0.10;
-                                    0.75,     0.00,    0.75;
-                                    0.50,     0.50,    0.50;
-                                    0.50,     0.57,    0.00;
-                                    0.00,     0.00,    0.00;
-                                   ];
+            plot.Colors          = {
+                                    [ 0.16,     0.44,    1.00 ],...
+                                    [ 0.93,     0.00,    0.00 ],...
+                                    [ 0.00,     0.57,    0.00 ],...
+                                    [ 0.17,     0.17,    0.17 ],...
+                                    [ 0.44,     0.00,    0.99 ],...
+                                    [ 1.00,     0.50,    0.10 ],...
+                                    [ 0.75,     0.00,    0.75 ],...
+                                    [ 0.50,     0.50,    0.50 ],...
+                                    [ 0.50,     0.57,    0.00 ],...
+                                    [ 0.00,     0.00,    0.00 ]
+                                   };
             
             plot.AxisColor       = [0.0 0.0 0.0];
             plot.AxisLineWidth   = 2;
@@ -88,6 +87,8 @@ classdef Plot < handle
             plot.LegendBox       = 'off';
             plot.LegendBoxColor  = 'none';
             plot.LegendTextColor = [0,0,0];
+            plot.MarkerSpacing   = 5;
+            plot.Markers         = '';            
 
             plot.Resolution      = 600;
         end
@@ -102,7 +103,7 @@ classdef Plot < handle
         LineWidth
         LineStyle
         Markers
-        MarkerSpacing   = 0;
+        MarkerSpacing
         Colors
         AxisColor
         AxisLineWidth
@@ -159,7 +160,12 @@ classdef Plot < handle
         hzlabel     % ZLabel
         
         hp          % plot handle
+        hm          % plot handle for marker plots
+        hfm         % plot handle for fake marker plots
         N           % number of plots
+        xdata       % x coordinates of the plots
+        ydata       % y coordinates of the plots
+        zdata       % z coordinates of the plots
         
         holdLines   % if true, do not change existing plots.
         
@@ -170,496 +176,590 @@ classdef Plot < handle
         lineWidth   % line width
         lineStyle   % line style
         markers     % markers
+        markerSpacing % marker spacing
         colors      % line colors
     end
         
     methods
         % Constructor
-        function plot = Plot(h, HoldLines)
+        function self = Plot(h, HoldLines)
             if (nargin == 0)
-                plot.hfig = gcf;
-                plot.holdLines = false;
+                self.hfig = gcf;
+                self.holdLines = false;
             elseif (nargin == 1)
                 if isempty(h)
-                    plot.hfig = gcf;
+                    self.hfig = gcf;
                 else
-                    plot.hfig = h;
+                    self.hfig = h;
                 end
-                plot.holdLines = false;
+                self.holdLines = false;
             else
-                plot.holdLines = HoldLines;
+                self.holdLines = HoldLines;
             end
                         
             % get figure handles
-            plot.haxes = get(plot.hfig, 'CurrentAxes');
-            plot.htitle = get(plot.haxes, 'Title');
+            self.haxes = get(self.hfig, 'CurrentAxes');
+            self.htitle = get(self.haxes, 'Title');
             
-            plot.hxlabel = get(plot.haxes, 'XLabel');
-            plot.hylabel = get(plot.haxes, 'YLabel');
-            plot.hzlabel = get(plot.haxes, 'ZLabel');
+            self.hxlabel = get(self.haxes, 'XLabel');
+            self.hylabel = get(self.haxes, 'YLabel');
+            self.hzlabel = get(self.haxes, 'ZLabel');
             
-            % get the plot handles
-            plot.hp = get(plot.haxes, 'Children');
-            plot.N = length(plot.hp);
+            % get the self handles
+            self.hp = get(self.haxes, 'Children');
+            self.N = length(self.hp);
             % the order is reversed, correct it
-            for ihp = 1:plot.N
-                tmp(ihp) = plot.hp(end-ihp+1);
+            tmp = cell(self.N, 1);
+            self.hm = cell(self.N, 1);
+            self.hfm = cell(self.N, 1);
+            for ihp = 1:self.N
+                tmp{ihp} = self.hp(end-ihp+1);
             end
-            plot.hp = tmp;
+            self.hp = tmp;
+            
+            self.legendText = cell(self.N, 1);
+            
+            % get the self data
+            for ip = 1:self.N
+                self.xdata{ip} = get(self.hp{ip},'XData');
+                self.ydata{ip} = get(self.hp{ip},'YData');
+                self.zdata{ip} = get(self.hp{ip},'ZData');
+            end
             
             % set dimension unit
-            set(plot.hfig, 'Units', 'inches', 'Color', [1,1,1]);
-            set(plot.haxes,'Units', 'inches');
+            set(self.hfig, 'Units', 'inches', 'Color', [1,1,1]);
+            set(self.haxes,'Units', 'inches');
             
             % apply default properties
-            plot.setDefaultProperties()            
+            self.setDefaultProperties()            
         end
         
-        function set.BoxDim(plot, value)
-            plot.boxDim = value;
-            plot.adjustBoxDim();
+        function addPlot(self, X, Y)
+            if ~isempty(self.haxes)
+                hold(self.haxes, 'on');
+            end
+            self.hp{end+1} = plot(X,Y);
         end
-        function value = get.BoxDim(plot)
-            pos = get(plot.haxes, 'Position');
+        
+        function set.BoxDim(self, value)
+            self.boxDim = value;
+            self.adjustBoxDim();
+        end
+        function value = get.BoxDim(self)
+            pos = get(self.haxes, 'Position');
             value(1) = pos(3);
             value(2) = pos(4);
         end
         
-        function set.ShowBox(plot, ShowBox)
-            set(plot.haxes, 'Box', ShowBox);
+        function set.ShowBox(self, ShowBox)
+            set(self.haxes, 'Box', ShowBox);
         end
-        function ShowBox = get.ShowBox(plot)
-            ShowBox = get(plot.haxes, 'Box');
+        function ShowBox = get.ShowBox(self)
+            ShowBox = get(self.haxes, 'Box');
         end
 
-        function set.FontName(plot, FontName)
+        function set.FontName(self, FontName)
             % set font name
-            set(plot.haxes, 'FontName', FontName);
-            set(plot.hxlabel, 'FontName', FontName);
-            set(plot.hylabel, 'FontName', FontName);
-            set(plot.hzlabel, 'FontName', FontName);
-            set(plot.htitle, 'FontName', FontName);
-            if isfield(plot, 'hlegend')
-                set(plot.hlegend, 'FontName', FontName);
+            set(self.haxes, 'FontName', FontName);
+            set(self.hxlabel, 'FontName', FontName);
+            set(self.hylabel, 'FontName', FontName);
+            set(self.hzlabel, 'FontName', FontName);
+            set(self.htitle, 'FontName', FontName);
+            if isfield(self, 'hlegend')
+                set(self.hlegend, 'FontName', FontName);
             end
             % re-adjust box dimension since changing font name might 
             % also result in change in box dimension.
-            plot.adjustBoxDim();
+            self.adjustBoxDim();
         end
-        function FontName = get.FontName(plot)
-            FontName = get(plot.haxes, 'FontName');
+        function FontName = get.FontName(self)
+            FontName = get(self.haxes, 'FontName');
         end
 
-        function set.FontSize(plot, FontSize)
+        function set.FontSize(self, FontSize)
             % change font size
-            set(plot.haxes, 'FontSize', FontSize);
-            set(plot.hxlabel, 'FontSize', FontSize);
-            set(plot.hylabel, 'FontSize', FontSize);
-            set(plot.hzlabel, 'FontSize', FontSize);
-            set(plot.htitle, 'FontSize', FontSize);
-            if isfield(plot, 'hlegend')
-                set(plot.hlegend, 'FontSize', FontSize);
+            set(self.haxes, 'FontSize', FontSize);
+            set(self.hxlabel, 'FontSize', FontSize);
+            set(self.hylabel, 'FontSize', FontSize);
+            set(self.hzlabel, 'FontSize', FontSize);
+            set(self.htitle, 'FontSize', FontSize);
+            if isfield(self, 'hlegend')
+                set(self.hlegend, 'FontSize', FontSize);
             end
             % re-adjust box dimension since changing font size might 
             % also result in change in box dimension.
-            plot.adjustBoxDim();
+            self.adjustBoxDim();
         end
-        function FontSize = get.FontSize(plot)
-            FontSize = get(plot.haxes, 'FontSize');
+        function FontSize = get.FontSize(self)
+            FontSize = get(self.haxes, 'FontSize');
         end
   
-        function set.LineWidth(plot, LineWidth)
-            if plot.holdLines == false
-                for ii=1:plot.N   
+        function set.LineWidth(self, LineWidth)
+            if self.holdLines == false
+                for ii=1:self.N   
                     if ii > length(LineWidth)
-                        plot.lineWidth(ii) = LineWidth(end);
+                        self.lineWidth(ii) = LineWidth(end);
                     else
-                        plot.lineWidth(ii) = LineWidth(ii);
+                        self.lineWidth(ii) = LineWidth(ii);
                     end
-                    set(plot.hp(ii), 'LineWidth', plot.lineWidth(ii));
+                    set(self.hp{ii}, 'LineWidth', self.lineWidth(ii));
                 end
             end 
         end
-        function LineWidth = get.LineWidth(plot)
-            LineWidth = plot.lineWidth;
+        function LineWidth = get.LineWidth(self)
+            LineWidth = self.lineWidth;
         end
 
-        function set.LineStyle(plot, LineStyle)
+        function set.LineStyle(self, LineStyle)
             if ~iscell(LineStyle)
                 tmp = LineStyle;
                 LineStyle = [];
                 LineStyle{1} = tmp;
             end
-            if plot.holdLines == false
-                for ii=1:plot.N   
+            if self.holdLines == false
+                for ii=1:self.N   
                     if ii > length(LineStyle)
-                       plot.lineStyle{ii} = LineStyle{end};
+                       self.lineStyle{ii} = LineStyle{end};
                     else
-                       plot.lineStyle{ii} = LineStyle{ii};
+                       self.lineStyle{ii} = LineStyle{ii};
                     end
-                    set(plot.hp(ii), 'LineStyle', plot.lineStyle{ii});
+                    set(self.hp{ii}, 'LineStyle', self.lineStyle{ii});
                 end
             end 
         end
-        function LineStyle = get.LineStyle(plot)
-            LineStyle = plot.lineStyle;
+        function LineStyle = get.LineStyle(self)
+            LineStyle = self.lineStyle;
         end
 
-        function set.Markers(plot, Markers)
+        function set.Markers(self, Markers)
             if ~iscell(Markers)
                 tmp = Markers;
                 Markers = [];
                 Markers{1} = tmp;
             end
-            if plot.holdLines == false
-                for ii=1:plot.N   
+            if self.holdLines == false
+                for ii=1:self.N   
                     if ii > length(Markers)
-                       plot.Markers{ii} = Markers{end};
+                        self.markers{ii} = Markers{end};
                     else
-                       plot.markers{ii} = Markers{ii};
+                        self.markers{ii} = Markers{ii};
                     end
-                    %set(plot.hp(ii), 'LineStyle', plot.lineStyle{ii});
+                    
+                    if strcmp(self.markers{ii}, '')
+                        self.markers{ii} = 'None';
+                    end
+                    
+                    if ~strcmp(self.markers{ii}, 'None')
+                        if isempty(self.hm{ii}) && ~strcmp(self.markers{ii}, 'None')
+                            X = self.xdata{ii};
+                            Y = self.ydata{ii};
+
+                            hold(self.haxes, 'on')
+                            self.hm{ii} = plot (X(1:self.markerSpacing(ii):end), Y(1:self.markerSpacing(ii):end));
+                        end
+                        set(self.hm{ii}, ...
+                          'LineStyle'       , 'None', ...
+                          'Marker'          , self.markers{ii},...
+                          'Color'           , self.colors{ii}, ...
+                          'MarkerEdgeColor' , 'none',...
+                          'MarkerFaceColor' , self.colors{ii}, ...
+                          'MarkerSize'      , 3*self.lineWidth(ii)); 
+                    
+                        if isempty(self.hfm{ii})
+                            X = self.xdata{ii};
+                            Y = self.ydata{ii};
+                        
+                            hold(self.haxes, 'on')
+                            self.hfm{ii} = plot(X, Y);
+                        end
+                        set(self.hfm{ii}, ...
+                          'LineStyle'       , self.lineStyle{ii}, ...
+                          'Marker'          , self.markers{ii},...
+                          'Color'           , self.colors{ii}, ...
+                          'MarkerEdgeColor' , 'none',...
+                          'MarkerFaceColor' , self.colors{ii}, ...
+                          'MarkerSize'      , 3*self.lineWidth(ii), ...
+                          'LineWidth'       , self.lineWidth(ii),...
+                          'Visible'         , 'off');
+                    end                       
                 end
             end 
         end
-        function Markers = get.Markers(plot)
-            Markers = plot.markers;
+        function Markers = get.Markers(self)
+            Markers = self.markers;
+        end
+        function set.MarkerSpacing(self, MarkerSpacing)
+            if self.holdLines == false
+                for ii=1:self.N   
+                    if ii > length(MarkerSpacing)
+                       self.markerSpacing(ii) = MarkerSpacing(end);
+                    else
+                       self.markerSpacing(ii) = MarkerSpacing(ii);
+                    end
+                end
+            end 
         end
         
-        function set.Colors(plot, Colors)
-            if plot.holdLines == false
-                for ii=1:plot.N   
-                    if ii > size(Colors, 1)
-                       plot.colors(ii, :) = Colors(end, :);
+        function MarkerSpacing = get.MarkerSpacing(self)
+            MarkerSpacing = self.markerSpacing;
+        end
+        
+        function set.Colors(self, Colors)
+            if self.holdLines == false
+                for ii=1:self.N   
+                    if ii > size(Colors)
+                       self.colors{ii} = Colors{end};
                     else
-                       plot.colors(ii, :) = Colors(ii, :);
+                       self.colors{ii} = Colors{ii};
                     end
-                    set(plot.hp(ii), 'Color', plot.colors(ii,:));
+                    set(self.hp{ii}, 'Color', self.colors{ii});
+                    if ~isempty(self.hm{ii})
+                        set(self.hm{ii}, 'Color', self.colors{ii}, 'MarkerFaceColor' , self.colors{ii});
+                    end
+                    if ~isempty(self.hfm{ii})
+                        set(self.hfm{ii}, 'Color', self.colors{ii}, 'MarkerFaceColor' , self.colors{ii});
+                    end                    
                 end
             end 
         end
-        function Colors = get.Colors(plot)
-            Colors = plot.colors;
+        function Colors = get.Colors(self)
+            Colors = self.colors;
         end        
         
-        function set.AxisColor(plot, AxisColor)
-            set(plot.haxes    , ...
+        function set.AxisColor(self, AxisColor)
+            set(self.haxes    , ...
                 'XColor'      , AxisColor, ...
                 'YColor'      , AxisColor, ...
                 'ZColor'      , AxisColor);
         end
-        function AxisColor = get.AxisColor(plot)
-            AxisColor = get(plot.haxes, 'XColor');
+        function AxisColor = get.AxisColor(self)
+            AxisColor = get(self.haxes, 'XColor');
         end
         
-        function set.AxisLineWidth(plot, AxisLineWidth)
-            set(plot.haxes, 'LineWidth' , AxisLineWidth);
+        function set.AxisLineWidth(self, AxisLineWidth)
+            set(self.haxes, 'LineWidth' , AxisLineWidth);
         end
-        function AxisLineWidth = get.AxisLineWidth(plot)
-            AxisLineWidth = get(plot.haxes, 'LineWidth');
-        end
-        
-        function set.XLabel(plot, XLabel)
-            set(plot.hxlabel, 'String', XLabel);
-            plot.adjustBoxDim();
-        end
-        function XLabel = get.XLabel(plot)
-            XLabel = get(plot.hxlabel, 'String');
-        end
-
-        function set.YLabel(plot, YLabel)
-            set(plot.hylabel, 'String', YLabel);
-            plot.adjustBoxDim();
-        end
-        function YLabel = get.YLabel(plot)
-            YLabel = get(plot.hylabel, 'String');
+        function AxisLineWidth = get.AxisLineWidth(self)
+            AxisLineWidth = get(self.haxes, 'LineWidth');
         end
         
-        function set.ZLabel(plot, ZLabel)
-            set(plot.hzlabel, 'String', ZLabel);
-            plot.adjustBoxDim();
+        function set.XLabel(self, XLabel)
+            set(self.hxlabel, 'String', XLabel);
+            self.adjustBoxDim();
         end
-        function ZLabel = get.ZLabel(plot)
-            ZLabel = get(plot.hzlabel, 'String');
+        function XLabel = get.XLabel(self)
+            XLabel = get(self.hxlabel, 'String');
         end
 
-        function set.XTick(plot, XTick)
-            set(plot.haxes, 'XTick' , XTick);
+        function set.YLabel(self, YLabel)
+            set(self.hylabel, 'String', YLabel);
+            self.adjustBoxDim();
         end
-        function XTick = get.XTick(plot)
-            XTick = get(plot.haxes, 'XTick');
+        function YLabel = get.YLabel(self)
+            YLabel = get(self.hylabel, 'String');
         end
         
-        function set.YTick(plot, YTick)
-            set(plot.haxes, 'YTick' , YTick);
+        function set.ZLabel(self, ZLabel)
+            set(self.hzlabel, 'String', ZLabel);
+            self.adjustBoxDim();
         end
-        function YTick = get.YTick(plot)
-            YTick = get(plot.haxes, 'YTick');
+        function ZLabel = get.ZLabel(self)
+            ZLabel = get(self.hzlabel, 'String');
+        end
+
+        function set.XTick(self, XTick)
+            set(self.haxes, 'XTick' , XTick);
+        end
+        function XTick = get.XTick(self)
+            XTick = get(self.haxes, 'XTick');
         end
         
-        function set.ZTick(plot, ZTick)
-            set(plot.haxes, 'ZTick' , ZTick);
+        function set.YTick(self, YTick)
+            set(self.haxes, 'YTick' , YTick);
         end
-        function ZTick = get.ZTick(plot)
-            ZTick = get(plot.haxes, 'ZTick');
-        end
-
-        function set.XMinorTick(plot, XMinorTick)
-            set(plot.haxes, 'XMinorTick' , XMinorTick);
-        end
-        function XMinorTick = get.XMinorTick(plot)
-            XMinorTick = get(plot.haxes, 'XMinorTick');
-        end
-
-        function set.YMinorTick(plot, YMinorTick)
-            set(plot.haxes, 'YMinorTick' , YMinorTick);
-        end
-        function YMinorTick = get.YMinorTick(plot)
-            YMinorTick = get(plot.haxes, 'YMinorTick');
-        end
-
-        function set.ZMinorTick(plot, ZMinorTick)
-            set(plot.haxes, 'ZMinorTick' , ZMinorTick);
-        end
-        function ZMinorTick = get.ZMinorTick(plot)
-            ZMinorTick = get(plot.haxes, 'ZMinorTick');
-        end
-
-        function set.TickDir(plot, TickDir)
-            set(plot.haxes, 'TickDir' , TickDir);
-        end
-        function TickDir = get.TickDir(plot)
-            TickDir = get(plot.haxes, 'TickDir');
-        end
-
-        function set.TickLength(plot, TickLength)
-            set(plot.haxes, 'TickLength' , TickLength);
-        end
-        function TickLength = get.TickLength(plot)
-            TickLength = get(plot.haxes, 'TickLength');
+        function YTick = get.YTick(self)
+            YTick = get(self.haxes, 'YTick');
         end
         
-        function set.XLim(plot, XLim)
-            set(plot.haxes, 'XLim' , XLim);
+        function set.ZTick(self, ZTick)
+            set(self.haxes, 'ZTick' , ZTick);
         end
-        function XLim = get.XLim(plot)
-            XLim = get(plot.haxes, 'XLim');
+        function ZTick = get.ZTick(self)
+            ZTick = get(self.haxes, 'ZTick');
+        end
+
+        function set.XMinorTick(self, XMinorTick)
+            set(self.haxes, 'XMinorTick' , XMinorTick);
+        end
+        function XMinorTick = get.XMinorTick(self)
+            XMinorTick = get(self.haxes, 'XMinorTick');
+        end
+
+        function set.YMinorTick(self, YMinorTick)
+            set(self.haxes, 'YMinorTick' , YMinorTick);
+        end
+        function YMinorTick = get.YMinorTick(self)
+            YMinorTick = get(self.haxes, 'YMinorTick');
+        end
+
+        function set.ZMinorTick(self, ZMinorTick)
+            set(self.haxes, 'ZMinorTick' , ZMinorTick);
+        end
+        function ZMinorTick = get.ZMinorTick(self)
+            ZMinorTick = get(self.haxes, 'ZMinorTick');
+        end
+
+        function set.TickDir(self, TickDir)
+            set(self.haxes, 'TickDir' , TickDir);
+        end
+        function TickDir = get.TickDir(self)
+            TickDir = get(self.haxes, 'TickDir');
+        end
+
+        function set.TickLength(self, TickLength)
+            set(self.haxes, 'TickLength' , TickLength);
+        end
+        function TickLength = get.TickLength(self)
+            TickLength = get(self.haxes, 'TickLength');
         end
         
-        function set.YLim(plot, YLim)
-            set(plot.haxes, 'YLim' , YLim);
+        function set.XLim(self, XLim)
+            set(self.haxes, 'XLim' , XLim);
         end
-        function YLim = get.YLim(plot)
-            YLim = get(plot.haxes, 'YLim');
+        function XLim = get.XLim(self)
+            XLim = get(self.haxes, 'XLim');
+        end
+        
+        function set.YLim(self, YLim)
+            set(self.haxes, 'YLim' , YLim);
+        end
+        function YLim = get.YLim(self)
+            YLim = get(self.haxes, 'YLim');
         end
 
-        function set.ZLim(plot, ZLim)
-            set(plot.haxes, 'ZLim' , ZLim);
+        function set.ZLim(self, ZLim)
+            set(self.haxes, 'ZLim' , ZLim);
         end
-        function ZLim = get.ZLim(plot)
-            ZLim = get(plot.haxes, 'ZLim');
+        function ZLim = get.ZLim(self)
+            ZLim = get(self.haxes, 'ZLim');
         end
 
-        function set.XScale(plot, XScale)
-            set(plot.haxes, 'XScale' , XScale);
+        function set.XScale(self, XScale)
+            set(self.haxes, 'XScale' , XScale);
         end
-        function XScale = get.XScale(plot)
-            XScale = get(plot.haxes, 'XScale');
+        function XScale = get.XScale(self)
+            XScale = get(self.haxes, 'XScale');
         end        
 
-        function set.YScale(plot, YScale)
-            set(plot.haxes, 'YScale' , YScale);
+        function set.YScale(self, YScale)
+            set(self.haxes, 'YScale' , YScale);
         end
-        function YScale = get.YScale(plot)
-            YScale = get(plot.haxes, 'YScale');
+        function YScale = get.YScale(self)
+            YScale = get(self.haxes, 'YScale');
         end                
 
-        function set.ZScale(plot, ZScale)
-            set(plot.haxes, 'ZScale' , ZScale);
+        function set.ZScale(self, ZScale)
+            set(self.haxes, 'ZScale' , ZScale);
         end
-        function ZScale = get.ZScale(plot)
-            ZScale = get(plot.haxes, 'ZScale');
-        end                
-        
-        function set.XGrid(plot, XGrid)
-            set(plot.haxes, 'XGrid' , XGrid);
-        end
-        function XGrid = get.XGrid(plot)
-            XGrid = get(plot.haxes, 'XGrid');
-        end                
-
-        function set.YGrid(plot, YGrid)
-            set(plot.haxes, 'YGrid' , YGrid);
-        end
-        function YGrid = get.YGrid(plot)
-            YGrid = get(plot.haxes, 'YGrid');
-        end                
-
-        function set.ZGrid(plot, ZGrid)
-            set(plot.haxes, 'ZGrid' , ZGrid);
-        end
-        function ZGrid = get.ZGrid(plot)
-            ZGrid = get(plot.haxes, 'ZGrid');
-        end                
-
-        function set.XMinorGrid(plot, XMinorGrid)
-            set(plot.haxes, 'XMinorGrid' , XMinorGrid);
-        end
-        function XMinorGrid = get.XMinorGrid(plot)
-            XMinorGrid = get(plot.haxes, 'XMinorGrid');
-        end                
-
-        function set.YMinorGrid(plot, YMinorGrid)
-            set(plot.haxes, 'YMinorGrid' , YMinorGrid);
-        end
-        function YMinorGrid = get.YMinorGrid(plot)
-            YMinorGrid = get(plot.haxes, 'YMinorGrid');
-        end                
-
-        function set.ZMinorGrid(plot, ZMinorGrid)
-            set(plot.haxes, 'ZMinorGrid' , ZMinorGrid);
-        end
-        function ZMinorGrid = get.ZMinorGrid(plot)
-            ZMinorGrid = get(plot.haxes, 'ZMinorGrid');
+        function ZScale = get.ZScale(self)
+            ZScale = get(self.haxes, 'ZScale');
         end                
         
-        function set.XDir(plot, XDir)
-            set(plot.haxes, 'XDir' , XDir);
+        function set.XGrid(self, XGrid)
+            set(self.haxes, 'XGrid' , XGrid);
         end
-        function XDir = get.XDir(plot)
-            XDir = get(plot.haxes, 'XDir');
+        function XGrid = get.XGrid(self)
+            XGrid = get(self.haxes, 'XGrid');
+        end                
+
+        function set.YGrid(self, YGrid)
+            set(self.haxes, 'YGrid' , YGrid);
+        end
+        function YGrid = get.YGrid(self)
+            YGrid = get(self.haxes, 'YGrid');
+        end                
+
+        function set.ZGrid(self, ZGrid)
+            set(self.haxes, 'ZGrid' , ZGrid);
+        end
+        function ZGrid = get.ZGrid(self)
+            ZGrid = get(self.haxes, 'ZGrid');
+        end                
+
+        function set.XMinorGrid(self, XMinorGrid)
+            set(self.haxes, 'XMinorGrid' , XMinorGrid);
+        end
+        function XMinorGrid = get.XMinorGrid(self)
+            XMinorGrid = get(self.haxes, 'XMinorGrid');
+        end                
+
+        function set.YMinorGrid(self, YMinorGrid)
+            set(self.haxes, 'YMinorGrid' , YMinorGrid);
+        end
+        function YMinorGrid = get.YMinorGrid(self)
+            YMinorGrid = get(self.haxes, 'YMinorGrid');
+        end                
+
+        function set.ZMinorGrid(self, ZMinorGrid)
+            set(self.haxes, 'ZMinorGrid' , ZMinorGrid);
+        end
+        function ZMinorGrid = get.ZMinorGrid(self)
+            ZMinorGrid = get(self.haxes, 'ZMinorGrid');
+        end                
+        
+        function set.XDir(self, XDir)
+            set(self.haxes, 'XDir' , XDir);
+        end
+        function XDir = get.XDir(self)
+            XDir = get(self.haxes, 'XDir');
         end                        
 
-        function set.YDir(plot, YDir)
-            set(plot.haxes, 'YDir' , YDir);
+        function set.YDir(self, YDir)
+            set(self.haxes, 'YDir' , YDir);
         end
-        function YDir = get.YDir(plot)
-            YDir = get(plot.haxes, 'YDir');
+        function YDir = get.YDir(self)
+            YDir = get(self.haxes, 'YDir');
         end                        
 
-        function set.ZDir(plot, ZDir)
-            set(plot.haxes, 'ZDir' , ZDir);
+        function set.ZDir(self, ZDir)
+            set(self.haxes, 'ZDir' , ZDir);
         end
-        function ZDir = get.ZDir(plot)
-            ZDir = get(plot.haxes, 'ZDir');
+        function ZDir = get.ZDir(self)
+            ZDir = get(self.haxes, 'ZDir');
         end                        
 
-        function set.Legend(plot, Legend)
-            plot.legendText = Legend;
-            plot.hlegend = legend(plot.hp, plot.legendText);
+        function set.Legend(self, Legend)
+            hp1 = [];
+            text1 = [];
+            il = 1;
+            for ii = 1:self.N           
+                if ii <= length(Legend)
+                    self.legendText{ii} = Legend{ii};
+                end
+                if ~isempty(self.legendText{ii})
+                    if isempty(self.hfm{ii})
+                        hp1(il) = self.hp{ii};
+                    else
+                        hp1(il) = self.hfm{ii};
+                    end
+                    text1{il} = self.legendText{ii};
+                    il = il + 1;
+                end                
+            end
+            self.hlegend = legend(hp1, text1);
         end
-        function Legend = get.Legend(plot)
-            Legend = plot.legendText;
+        function Legend = get.Legend(self)
+            Legend = self.legendText;
         end
 
-        function set.LegendBox(plot, LegendBox)
-            if isempty(plot.hlegend)
-                plot.hlegend = plot.findLegendHandle();
+        function set.LegendBox(self, LegendBox)
+            if isempty(self.hlegend)
+                self.hlegend = self.findLegendHandle();
             end
             
-            if ~isempty(plot.hlegend)
-                set(plot.hlegend, 'Box', LegendBox);
+            if ~isempty(self.hlegend)
+                set(self.hlegend, 'Box', LegendBox);
             end
         end
-        function LegendBox = get.LegendBox(plot)
+        function LegendBox = get.LegendBox(self)
             LegendBox = [];
-            if isempty(plot.hlegend)
-                plot.hlegend = plot.findLegendHandle();
+            if isempty(self.hlegend)
+                self.hlegend = self.findLegendHandle();
             end
             
-            if ~isempty(plot.hlegend)
-                LegendBox = get(plot.hlegend, 'Box');
+            if ~isempty(self.hlegend)
+                LegendBox = get(self.hlegend, 'Box');
             end
 
         end
 
-        function set.LegendBoxColor(plot, LegendBoxColor)
-            if isempty(plot.hlegend)
-                plot.hlegend = plot.findLegendHandle();
+        function set.LegendBoxColor(self, LegendBoxColor)
+            if isempty(self.hlegend)
+                self.hlegend = self.findLegendHandle();
             end
             
-            if ~isempty(plot.hlegend)
-                set(plot.hlegend, 'Color', LegendBoxColor);
+            if ~isempty(self.hlegend)
+                set(self.hlegend, 'Color', LegendBoxColor);
             end
         end
-        function LegendBoxColor = get.LegendBoxColor(plot)
+        function LegendBoxColor = get.LegendBoxColor(self)
             LegendBoxColor = [];
-            if isempty(plot.hlegend)
-                plot.hlegend = plot.findLegendHandle();
+            if isempty(self.hlegend)
+                self.hlegend = self.findLegendHandle();
             end
             
-            if ~isempty(plot.hlegend)
-                LegendBoxColor = get(plot.hlegend, 'Color');
+            if ~isempty(self.hlegend)
+                LegendBoxColor = get(self.hlegend, 'Color');
             end
 
         end
 
-        function set.LegendTextColor(plot, LegendTextColor)
-            if isempty(plot.hlegend)
-                plot.hlegend = plot.findLegendHandle();
+        function set.LegendTextColor(self, LegendTextColor)
+            if isempty(self.hlegend)
+                self.hlegend = self.findLegendHandle();
             end
             
-            if ~isempty(plot.hlegend)
-                set(plot.hlegend, 'TextColor', LegendTextColor);
+            if ~isempty(self.hlegend)
+                set(self.hlegend, 'TextColor', LegendTextColor);
             end
         end
-        function LegendTextColor = get.LegendTextColor(plot)
+        function LegendTextColor = get.LegendTextColor(self)
             LegendTextColor = [];
-            if isempty(plot.hlegend)
-                plot.hlegend = plot.findLegendHandle();
+            if isempty(self.hlegend)
+                self.hlegend = self.findLegendHandle();
             end
             
-            if ~isempty(plot.hlegend)
-                LegendTextColor = get(plot.hlegend, 'TextColor');
+            if ~isempty(self.hlegend)
+                LegendTextColor = get(self.hlegend, 'TextColor');
             end
 
         end
 
-        function set.LegendLoc(plot, LegendLoc)
-            if isempty(plot.hlegend)
-                plot.hlegend = plot.findLegendHandle();
+        function set.LegendLoc(self, LegendLoc)
+            if isempty(self.hlegend)
+                self.hlegend = self.findLegendHandle();
             end
             
-            if ~isempty(plot.hlegend)
-                set(plot.hlegend, 'location', LegendLoc);
+            if ~isempty(self.hlegend)
+                set(self.hlegend, 'location', LegendLoc);
             end
         end
-        function LegendLoc = get.LegendLoc(plot)
+        function LegendLoc = get.LegendLoc(self)
             LegendLoc = [];
-            if isempty(plot.hlegend)
-                plot.hlegend = plot.findLegendHandle();
+            if isempty(self.hlegend)
+                self.hlegend = self.findLegendHandle();
             end
             
-            if ~isempty(plot.hlegend)
-                LegendLoc = get(plot.hlegend, 'location');
+            if ~isempty(self.hlegend)
+                LegendLoc = get(self.hlegend, 'location');
             end
 
         end
         
-        function set.Title(plot, Title)
-            set(plot.htitle, 'String', Title);
-            plot.adjustBoxDim();
+        function set.Title(self, Title)
+            set(self.htitle, 'String', Title);
+            self.adjustBoxDim();
         end
-        function Title = get.Title(plot)
-            Title = get(plot.htitle, 'String');
+        function Title = get.Title(self)
+            Title = get(self.htitle, 'String');
         end
         
         % save to disk
-        function export(plot, FileName)
+        function export(self, FileName)
             fileType = strread(FileName, '%s', 'delimiter', '.');
             fileType = fileType(end);
 
             if strcmpi(fileType, 'eps')
-                print(plot.hfig, '-depsc2', FileName);
+                print(self.hfig, '-depsc2', FileName);
                 fixPSlinestyle(FileName);
             elseif strcmpi(fileType, 'pdf')
-                print(plot.hfig, '-dpdf', FileName);
+                print(self.hfig, '-dpdf', FileName);
             elseif strcmpi(fileType, 'jpg') || strcmpi(fileType, 'jpeg')
-                print(plot.hfig, '-djpeg', '-opengl', sprintf('-r%d', plot.Resolution), FileName);
+                print(self.hfig, '-djpeg', '-opengl', sprintf('-r%d', self.Resolution), FileName);
             elseif strcmpi(fileType, 'png') 
-                print(plot.hfig, '-dpng', '-opengl', sprintf('-r%d', plot.Resolution), FileName);
+                print(self.hfig, '-dpng', '-opengl', sprintf('-r%d', self.Resolution), FileName);
             elseif strcmpi(fileType, 'tiff') 
-                print(plot.hfig, '-dtiff', '-opengl', sprintf('-r%d', plot.Resolution), FileName);
+                print(self.hfig, '-dtiff', '-opengl', sprintf('-r%d', self.Resolution), FileName);
             else
                 err = MException('', ...
                     '=====> ERROR: File type %s is not supported. ', fileType);
@@ -670,22 +770,24 @@ classdef Plot < handle
     end
     
     methods(Hidden, Access = private)
-        function adjustBoxDim(plot)
-            BoxPos = [1, 1, plot.boxDim(1), plot.boxDim(2)];
+        function adjustBoxDim(self)
+            BoxPos = [1, 1, self.boxDim(1), self.boxDim(2)];
             % positioning
             % set the box size
-            set(plot.haxes, 'Position', BoxPos);
+            set(self.haxes, 'Position', BoxPos);
             % set the figure size and position
-            pos = get(plot.hfig, 'Position');
-            outerpos = get(plot.haxes, 'OuterPosition');
-            set(plot.haxes, 'OuterPosition',[0, 0, outerpos(3), outerpos(4)]);
-            set(plot.hfig, 'Position', [pos(1), pos(2), outerpos(3), outerpos(4)]);
+            pos = get(self.hfig, 'Position');
+            outerpos = get(self.haxes, 'OuterPosition');
+            if ~isempty(outerpos)
+                set(self.haxes, 'OuterPosition',[0, 0, outerpos(3), outerpos(4)]);
+                set(self.hfig, 'Position', [pos(1), pos(2), outerpos(3), outerpos(4)]);
+            end
             % for paper position in the eps
-            set(plot.hfig, 'PaperPositionMode', 'auto');            
+            set(self.hfig, 'PaperPositionMode', 'auto');            
         end
         
-        function h = findLegendHandle(plot)
-            h = findobj(plot.hfig,'Type','axes','Tag','legend');
+        function h = findLegendHandle(self)
+            h = findobj(self.hfig,'Type','axes','Tag','legend');
         end
     end
 end
