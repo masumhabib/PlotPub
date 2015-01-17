@@ -23,6 +23,7 @@ p = Plot();
 p.XLabel = 'Time, t (ms)'; % xlabel
 p.YLabel = 'Voltage, V (V)'; %ylabel
 
+p.export('plotSimpleOOP.eps');
 
 % % change settings
 % opt = [];
