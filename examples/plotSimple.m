@@ -21,6 +21,7 @@ plot(t*1E3, v);
 opt = [];
 opt.XLabel = 'Time, t (ms)'; % xlabel
 opt.YLabel = 'Voltage, V (V)'; %ylabel
+opt.Title = 'Voltage as a function of time';
 
 % Save? comment the following line if you do not want to save
 opt.FileName = 'plotSimple1.eps'; 

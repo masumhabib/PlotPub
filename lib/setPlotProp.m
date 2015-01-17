@@ -22,6 +22,7 @@ function h = setPlotProp(opt, hfig)
 %   XLabel:       X axis label
 %   YLabel:       Y axis label
 %   ZLabel:       Z axis label
+%   Title:        Plot title
 %   XTick:        [tick1, tick2, ..]: major ticks for X axis.
 %   YTick:        [tick1, tick2, ..]: major ticks for Y axis.
 %   ZTick:        [tick1, tick2, ..]: major ticks for Z axis.
@@ -55,7 +56,7 @@ function h = setPlotProp(opt, hfig)
 %
 %
 % Written by: K M Masum Habib (http://masumhabib.com)
-% Copyright (c) K M Masum Habib 2012-2014.
+% Copyright (c) K M Masum Habib 2012-2015.
 %
 % Distributed under the BSD License.
 %
@@ -438,6 +439,12 @@ set(hzl              , ...
     'FontName'       , FontName,...
     'FontSize'       , FontSize);
 
+if isfield(opt, 'Title')
+    htitle = title(haxis, opt.Title,...
+        'FontName', FontName, ...
+        'FontSize', FontSize);
+end
+
 % positioning
 % set the box size
 set(haxis, ...
@@ -459,7 +466,10 @@ if isfield(opt, 'FileName')
     
     if strcmpi(fileType, 'eps')
         print(hfig, '-depsc2', opt.FileName);
-        fixPSlinestyle(opt.FileName);
+        vers = version();
+        if vers(1:3) ~= '8.4'
+            fixPSlinestyle(opt.FileName);
+        end
     elseif strcmpi(fileType, 'pdf')
         print(hfig, '-dpdf', opt.FileName);
     elseif strcmpi(fileType, 'jpg') || strcmpi(fileType, 'jpeg')
