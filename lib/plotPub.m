@@ -25,6 +25,7 @@ function h = plotPub(X, Y, N, opt)
 %   XLabel:       X axis label
 %   YLabel:       Y axis label
 %   ZLabel:       Z axis label
+%   Title:        Plot title
 %   XTick:        [tick1, tick2, ..]: major ticks for X axis.
 %   YTick:        [tick1, tick2, ..]: major ticks for Y axis.
 %   ZTick:        [tick1, tick2, ..]: major ticks for Z axis.
@@ -58,11 +59,11 @@ function h = plotPub(X, Y, N, opt)
 %
 %
 % Written by: K M Masum Habib (http://masumhabib.com)
-% Copyright (c) K M Masum Habib 2012-2014.
+% Copyright (c) K M Masum Habib 2012-2015.
 %
 % Distributed under the BSD License.
 %
-% Version: 1.3
+% Version: 1.4
 %
 
 if nargin ~= 4
