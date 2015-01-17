@@ -467,7 +467,7 @@ if isfield(opt, 'FileName')
     if strcmpi(fileType, 'eps')
         print(hfig, '-depsc2', opt.FileName);
         vers = version();
-        if vers(1:3) ~= '8.4'
+        if ~strcmp(vers(1:3), '8.4')
             fixPSlinestyle(opt.FileName);
         end
     elseif strcmpi(fileType, 'pdf')
