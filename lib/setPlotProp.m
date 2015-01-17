@@ -60,7 +60,7 @@ function h = setPlotProp(opt, hfig)
 %
 % Distributed under the BSD License.
 %
-% Version: 1.3
+% Version: 1.4
 %
 
 if nargin < 1 || nargin > 2
