@@ -751,7 +751,10 @@ classdef Plot < handle
 
             if strcmpi(fileType, 'eps')
                 print(self.hfig, '-depsc2', FileName);
-                fixPSlinestyle(FileName);
+                vers = version();
+                if ~strcmp(vers(1:3), '8.4')
+                    fixPSlinestyle(opt.FileName);
+                end
             elseif strcmpi(fileType, 'pdf')
                 print(self.hfig, '-dpdf', FileName);
             elseif strcmpi(fileType, 'jpg') || strcmpi(fileType, 'jpeg')
