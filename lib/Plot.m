@@ -194,6 +194,11 @@ classdef Plot < handle
                 end
                 self.holdLines = false;
             else
+                if isempty(h)
+                    self.hfig = gcf;
+                else
+                    self.hfig = h;
+                end                
                 self.holdLines = HoldLines;
             end
                         
