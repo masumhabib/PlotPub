@@ -14,6 +14,7 @@ classdef Plot < handle
 %   FontSize:       integer; default: 26
 %   LineWidth:      vector [width1, width2, ..]: element i changes the property of i-th dataset; default: 2
 %   LineStyle:      cell array {'style1', 'style2', ..}: element i changes the property of i-th dataset; default: '-'
+%   LineCount:    Number of plots (readonly)
 %   Markers:        cell array {'marker1', 'marker2', ..}: element i changes the property of i-th dataset; default: 'None'
 %   MarkerSpacing:  vector [space1, space2, ..]: element i changes the property of i-th dataset; default: 0
 %   Colors:         3xN matrix, [red, green, blue] where N is the number of datasets.
@@ -102,6 +103,7 @@ classdef Plot < handle
         FontSize
         LineWidth
         LineStyle
+        LineCount
         Markers
         MarkerSpacing
         Colors
@@ -334,6 +336,10 @@ classdef Plot < handle
         end
         function LineStyle = get.LineStyle(self)
             LineStyle = self.lineStyle;
+        end
+        
+        function LineCount = get.LineCount(self)
+            LineCount = size(self.hp,1);
         end
 
         function set.Markers(self, Markers)
