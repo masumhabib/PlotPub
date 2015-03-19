@@ -5,13 +5,24 @@ PlotPub
 
 MATLAB is an excellent tool. It is equally popular among students, researchers and professors. If you use MATLAB for your project/research, you probably know that it is not easy to create publication quality graphs (PQGs) using MATLAB. You will have to call a billion <code>set</code> and <code>get</code> functions to create a decent plot with desired height, width, fonts, line width, color etc. Here, I present PlotPub which is a set of MATLAB functions that allows you to modify almost all aspects of MATLAB figures and export PQGs using one function call and a simple structure.
 
-<h4>Whats New in v1.4</h4>
+<h4>New features of v2.x</h4>
+<hr />
+<ul>
+	<li>Simple and elegant object oriented approach: all aspects of the MATLAB figure is encapsulated in the Plot class.</li>
+	<li>Create new plots or open saved figures using the same call, Plot().</li>
+	<li>Control every aspect of a MATLAB figure using the Plot class object.</li>
+	<li>Even easier to use.</li>
+	<li>Fully compatible to v1.x.</li>
+</ul>
+
+
+<h4>Whats new in v1.4</h4>
 <hr />
 <ul>
     <li>Added the title option.</li>
 </ul>
 
-<h4>Whats New in v1.3</h4>
+<h4>Whats new in v1.3</h4>
 <hr />
 <ul>
 	<li>Several bugs fixed including marker spacing.</li>

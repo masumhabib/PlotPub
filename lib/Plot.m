@@ -80,6 +80,15 @@ classdef Plot < handle
 %   Resolution:   Resolution (dpi) for bitmapped file. Default:600.
 %   HoldLines:    true/false. true == only modify axes settings, do not 
 %                 touch plot lines/surfaces. Default false.
+%
+%
+% Written by: K M Masum Habib (http://masumhabib.com)
+% Copyright (c) K M Masum Habib 2012-2015.
+%
+% Distributed under the BSD License.
+%
+% Version: 2.0
+%
 
 
     methods (Hidden, Access = private)
