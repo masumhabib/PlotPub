@@ -17,7 +17,8 @@ and export PQGs using one function call and a simple structure.
 <ul>
 	<li>Simple and elegant object oriented approach: all aspects of the MATLAB 
 	figure is encapsulated in the Plot class.</li>
-	<li>Create new plots or open saved figures using the same call, Plot().</li>
+	<li>Create new plots, open saved figures or change existing figure using 
+	the same call, <code>Plot()</code>.</li>
 	<li>Control every aspect of a MATLAB figure using the Plot class object.</li>
 	<li>Property changes are immediately visible, useful when using from command
     window.</li>
@@ -144,6 +145,24 @@ plt.export('plotSimple1.png');
 The resulting plot should look like:
 
 ![MQGv2.0: Simple plot](https://github.com/masumhabib/PlotPub/blob/v2.0/examples_class/plotSimple1.png)
+
+Instead of creating the plot using 
+
+```matlab
+% plot it
+figure;
+plot(t*1E3, v);
+```
+
+one could also use Plot class directly to plot:
+
+```matlab
+plt = Plot(t*1E3, v); % create the figure directly using data
+
+plt.XLabel = 'Time, t (ms)'; % xlabel
+plt.YLabel = 'Voltage, V (V)'; %ylabel
+plt.Title = 'Voltage as a function of time'; % plot title
+```
 
 The full source code for this plot, <code>plotSimple.m</code>, can be found 
 inside the <code>examples_class</code> folder.
