@@ -5,10 +5,9 @@ addpath('../lib');
 
 % load previously generated fig file
 figFile = 'single.fig';
-open(figFile)
+plt = Plot(figFile);
 
-%% plot now
-plt = Plot();
+%% ettings
 plt.XLabel = 'Time, t (ms)'; % xlabel
 plt.YLabel = 'Voltage, V (V)'; %ylabel
 plt.Colors = {[0, 0, 0]}; % change plot color

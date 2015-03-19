@@ -4,12 +4,10 @@ clear all;
 addpath('../lib');
 
 
-% load previously generated fig file
-figFile = 'single.fig';
-open(figFile)
+%% load previously generated fig file
+plt = Plot('single.fig');
 
 %% change settings
-plt = Plot();
 plt.XLabel = 'Time, t (ms)'; % xlabel
 plt.YLabel = 'Voltage, V (V)'; %ylabel
 plt.BoxDim = [7, 5]; %[width, height]

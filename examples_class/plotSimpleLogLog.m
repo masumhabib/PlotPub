@@ -14,11 +14,9 @@ th = 2*pi*f*t;
 v = Vm*sin(th+phi);
 vsqr = v.^2;
 
-figure;
-plot(t*1E3, vsqr);
+%% plot and settings
+plt = Plot(t*1E3, vsqr);
 
-%% settings
-plt = Plot();
 plt.XLabel = 'Time, t (ms)'; % xlabel
 plt.YLabel = 'Voltage, V (V)'; %ylabel
 plt.YScale = 'log'; % 'linear' or 'log'

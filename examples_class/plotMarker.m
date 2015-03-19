@@ -3,9 +3,7 @@ clear all;
 
 % load previously generated fig file
 figFile = 'multiple.fig';
-open(figFile)
-
-plt = Plot();
+plt = Plot(figFile);
 
 % change properties
 plt.XLabel = 'Time, t (ms)'; % xlabel

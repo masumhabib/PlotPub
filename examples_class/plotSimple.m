@@ -14,10 +14,7 @@ th = 2*pi*f*t;
 v = Vm*sin(th+phi);
 
 % plot it
-figure;
-plot(t*1E3, v);
-
-plt = Plot();
+plt = Plot(t*1E3, v);
 
 % plt.Title = 'Voltage as a function of time'; % plot title
 plt.XLabel = 'Time, t (ms)'; % xlabel

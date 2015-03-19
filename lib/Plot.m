@@ -2,24 +2,52 @@ classdef Plot < handle
 % 
 % Plot class for Publication Quality Plot in MATLAB
 % 
-% This class changes the properties of the figure represented by 'hfig'
-% and exports it as a publication quality image file. The resolution of 
-% the image can be chosen by the user. Supported image formats are EPS, 
-% PDF, PNG, JPEG and TIFF. The figure properties are specified by the 
+% This class represents a MATLAB figure. It can create new plots, open
+% saved figure files and change properties of opened/existing figures.
+% It can also export figures as publication quality image files. 
+% The resolution of the image can be changed by the user. Supported image 
+% formats are EPS, PDF, PNG, JPEG and TIFF. The figure properties can be 
+% changed by easy-to-remember class properties.
+%
+% Construction:
+%   Plot()        
+%     Grabs the current figure.
+%   Plot(handle)  
+%     Grabs the figure pointed by handle.
+%   Plot('filename.fig') 
+%     Opens the figure file ('filename.fig') and use the opened figure.
+%   Plot(handle, holdLine) 
+%     Grabs the figure pointed by handle. If holdLine = true, it does not 
+%     change the plot properties.
+%   Plot(Y)
+%     Plots Y where Y must be a vector.
+%   Plot(X, Y)
+%     Plots Y vs X. Both X and Y must be vectors.
+%   Plot(X1, Y1, X2, Y2, ...)
+%     Plots Y's vs X's. X's and Y's must be vectors.
+%   
+%   Returns a plot object which can be used for subsequent property 
+%   changes.
 %
 % Properties:
-%   BoxDim:         vector [width, height]: size of the axes box in inches; default: [6, 2.5]
-%   ShowBox:        'on' = show or 'off' = hide bounding box
-%   FontName:       string: font name; default: 'Helvetica'
-%   FontSize:       integer; default: 26
-%   LineWidth:      vector [width1, width2, ..]: element i changes the property of i-th dataset; default: 2
-%   LineStyle:      cell array {'style1', 'style2', ..}: element i changes the property of i-th dataset; default: '-'
+%   BoxDim:       vector [width, height]: size of the axes box in inches; 
+%                 default: [6, 2.5]
+%   ShowBox:      'on' = show or 'off' = hide bounding box
+%   FontName:     string: font name; default: 'Helvetica'
+%   FontSize:     integer; default: 26
+%   LineWidth:    vector [width1, width2, ..]: element i changes the 
+%                 property of i-th dataset; default: 2
+%   LineStyle:    cell array {'style1', 'style2', ..}: element i changes 
+%                 the property of i-th dataset; default: '-'
 %   LineCount:    Number of plots (readonly)
-%   Markers:        cell array {'marker1', 'marker2', ..}: element i changes the property of i-th dataset; default: 'None'
-%   MarkerSpacing:  vector [space1, space2, ..]: element i changes the property of i-th dataset; default: 0
-%   Colors:         3xN matrix, [red, green, blue] where N is the number of datasets.
-%   AxisColor:      axis color, [red, green, blue]; default black.
-%   AxisLineWidth:  axis line width, number; default 2.
+%   Markers:      cell array {'marker1', 'marker2', ..}: element i changes 
+%                 the property of i-th dataset; default: 'None'
+%   MarkerSpacing:vector [space1, space2, ..]: element i changes the 
+%                 property of i-th dataset; default: 0
+%   Colors:       3xN matrix, [red, green, blue] where N is the number of 
+%                 datasets.
+%   AxisColor:    axis color, [red, green, blue]; default black.
+%   AxisLineWidth:axis line width, number; default 2.
 %   XLabel:       X axis label
 %   YLabel:       Y axis label
 %   ZLabel:       Z axis label
@@ -50,12 +78,13 @@ classdef Plot < handle
 %   LegendLoc:    'NorthEast', ..., 'SouthWest': legend location
 %   Title:        plot title, string
 %   Resolution:   Resolution (dpi) for bitmapped file. Default:600.
-%   HoldLines:    true/false. true == only modify axes settings, do not touch plot lines/surfaces. Default false.
-%   FileName:     Save? Give a file name.
+%   HoldLines:    true/false. true == only modify axes settings, do not 
+%                 touch plot lines/surfaces. Default false.
 
 
     methods (Hidden, Access = private)
         function setDefaultProperties(plot)
+            % Default properties. Change to your taste.
             plot.BoxDim          = [6, 3];  
             plot.ShowBox         = 'on';
             plot.FontName        = 'Arial'; 

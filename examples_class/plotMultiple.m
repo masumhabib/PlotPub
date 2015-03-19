@@ -15,15 +15,9 @@ v1 = Vm*sin(th);
 v2 = Vm*sin(th - phi);
 v3 = Vm*sin(th - phi*2);
 
-figure;
-plot(t*1E3, v1);
-hold on;
-plot(t*1E3, v2);
-plot(t*1E3, v3);
-hold off;
+%% plot and settings
+plt = Plot(t*1E3, v1, t*1E3, v2, t*1E3, v3);
 
-%% settings
-plt = Plot();
 plt.XLabel = 'Time, t (ms)'; % xlabel
 plt.YLabel = 'Voltage, V (V)'; %ylabel
 plt.YTick = [-10, 0, 10];

@@ -12,18 +12,16 @@ th = 2*pi*f*t;
 v = Vm*sin(th+phi);
 
 %% plot now
-plotx{1} = t*1E3; %convert time in ms and create a cell array
-ploty{1} = v; % assign v to a cell array
-opt.XLabel = 'Time, t (ms)'; % xlabel
-opt.YLabel = 'Voltage, V (V)'; %ylabel
-opt.YTick = [-10, 0, 10]; %[tick1, tick2, .. ]
-opt.YLim = [-11, 11]; % [min, max]
-opt.XMinorTick = 'off'; % 'on' or 'off'
-opt.Colors = [1, 0, 0]; %[red, green, blue]
+plt = Plot(t*1E3, v);
+
+plt.XLabel = 'Time, t (ms)'; % xlabel
+plt.YLabel = 'Voltage, V (V)'; %ylabel
+plt.YTick = [-10, 0, 10]; %[tick1, tick2, .. ]
+plt.YLim = [-11, 11]; % [min, max]
+plt.XMinorTick = 'off'; % 'on' or 'off'
+plt.Colors = {[1, 0, 0], [0, 0, 1]}; %[red, green, blue]
 
 % Save? comment the following line if you do not want to save
-opt.FileName = 'plotVoltSomeOther.tiff'; 
+plt.export('plotVoltSomeOther.tiff'); 
 
-% create the plot
-plotPub(plotx, ploty, 1,opt);
     
