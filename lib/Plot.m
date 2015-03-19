@@ -56,11 +56,11 @@ classdef Plot < handle
 
     methods (Hidden, Access = private)
         function setDefaultProperties(plot)
-            plot.BoxDim          = [6, 4];  
+            plot.BoxDim          = [6, 3];  
             plot.ShowBox         = 'on';
-            plot.FontName        = 'Helvetica'; 
-            plot.FontSize        = 26;
-            plot.LineWidth       = 4;
+            plot.FontName        = 'Arial'; 
+            plot.FontSize        = 20;
+            plot.LineWidth       = 2.5;
             plot.LineStyle       = '-'; 
             plot.Colors          = {
                                     [ 0.16,     0.44,    1.00 ],...
@@ -76,7 +76,7 @@ classdef Plot < handle
                                    };
             
             plot.AxisColor       = [0.0 0.0 0.0];
-            plot.AxisLineWidth   = 2;
+            plot.AxisLineWidth   = 1.5;
             plot.XMinorTick      = 'on';
             plot.YMinorTick      = 'on';
             plot.ZMinorTick      = 'on';
@@ -180,6 +180,10 @@ classdef Plot < handle
         markers     % markers
         markerSpacing % marker spacing
         colors      % line colors
+        legendBox          % legend box, on/off
+        legendBoxColor     % legend box color
+        legendTextColor    % legend text color
+
     end
         
     methods
@@ -658,6 +662,9 @@ classdef Plot < handle
                 end                
             end
             self.hlegend = legend(hp1, text1);
+            set(self.hlegend, 'Box', self.legendBox);
+            set(self.hlegend, 'Color', self.legendBoxColor);
+            set(self.hlegend, 'TextColor', self.legendTextColor);
         end
         function Legend = get.Legend(self)
             Legend = self.legendText;
@@ -671,6 +678,7 @@ classdef Plot < handle
             if ~isempty(self.hlegend)
                 set(self.hlegend, 'Box', LegendBox);
             end
+            self.legendBox = LegendBox;
         end
         function LegendBox = get.LegendBox(self)
             LegendBox = [];
@@ -692,6 +700,7 @@ classdef Plot < handle
             if ~isempty(self.hlegend)
                 set(self.hlegend, 'Color', LegendBoxColor);
             end
+            self.legendBoxColor = LegendBoxColor;
         end
         function LegendBoxColor = get.LegendBoxColor(self)
             LegendBoxColor = [];
@@ -702,7 +711,6 @@ classdef Plot < handle
             if ~isempty(self.hlegend)
                 LegendBoxColor = get(self.hlegend, 'Color');
             end
-
         end
 
         function set.LegendTextColor(self, LegendTextColor)
@@ -713,6 +721,7 @@ classdef Plot < handle
             if ~isempty(self.hlegend)
                 set(self.hlegend, 'TextColor', LegendTextColor);
             end
+            self.legendTextColor = LegendTextColor;
         end
         function LegendTextColor = get.LegendTextColor(self)
             LegendTextColor = [];
@@ -764,7 +773,7 @@ classdef Plot < handle
                 print(self.hfig, '-depsc2', FileName);
                 vers = version();
                 if ~strcmp(vers(1:3), '8.4')
-                    fixPSlinestyle(opt.FileName);
+                    fixPSlinestyle(FileName);
                 end
             elseif strcmpi(fileType, 'pdf')
                 print(self.hfig, '-dpdf', FileName);
