@@ -21,6 +21,8 @@ plt.YLim = [-11, 11]; % [min, max]
 plt.XMinorTick = 'off'; % 'on' or 'off'
 plt.Colors = {[1, 0, 0], [0, 0, 1]}; %[red, green, blue]
 
+plt.FontName = 'Times';
+
 % Save? comment the following line if you do not want to save
 plt.export('plotVoltSomeOther.tiff'); 
 
