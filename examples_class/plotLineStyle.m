@@ -8,15 +8,14 @@ figFile = 'single.fig';
 open(figFile)
 
 %% plot now
-opt.XLabel = 'Time, t (ms)'; % xlabel
-opt.YLabel = 'Voltage, V (V)'; %ylabel
-opt.Colors = [0, 0, 0]; % change plot color
-opt.LineWidth = 2; % line width
-opt.LineStyle = {'--'}; % line style
+plt = Plot();
+plt.XLabel = 'Time, t (ms)'; % xlabel
+plt.YLabel = 'Voltage, V (V)'; %ylabel
+plt.Colors = {[0, 0, 0]}; % change plot color
+plt.LineWidth = 2; % line width
+plt.LineStyle = {'--'}; % line style
 
 % Save? comment the following line if you do not want to save
-opt.FileName = 'plotLineStyle.png'; 
+plt.export('plotLineStyle.eps'); 
 
-% create the plot
-setPlotProp(opt);
     

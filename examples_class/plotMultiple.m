@@ -23,15 +23,13 @@ plot(t*1E3, v3);
 hold off;
 
 %% settings
-opt = [];
-opt.XLabel = 'Time, t (ms)'; % xlabel
-opt.YLabel = 'Voltage, V (V)'; %ylabel
-opt.YTick = [-10, 0, 10];
-opt.YLim = [-11, 11];
+plt = Plot();
+plt.XLabel = 'Time, t (ms)'; % xlabel
+plt.YLabel = 'Voltage, V (V)'; %ylabel
+plt.YTick = [-10, 0, 10];
+plt.YLim = [-11, 11];
 
 % Save? comment the following line if you do not want to save
-opt.FileName = 'plotMultiple.tiff'; 
+plt.export('plotMultiple.tiff'); 
 
-% create the plot
-setPlotProp(opt);
     

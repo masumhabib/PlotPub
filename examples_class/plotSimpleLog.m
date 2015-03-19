@@ -18,14 +18,12 @@ vsqr = v.^2 + 1E-5;
 figure;
 plot(t*1E3, vsqr);
 
-%% plot now
-opt.XLabel = 'Time, t (ms)'; % xlabel
-opt.YLabel = 'Voltage, V (V)'; %ylabel
-opt.YScale = 'log';
+%% set properties
+plt = Plot();
+plt.XLabel = 'Time, t (ms)'; % xlabel
+plt.YLabel = 'Voltage, V (V)'; %ylabel
+plt.YScale = 'log';
 
 % Save? comment the following line if you do not want to save
-opt.FileName = 'plotSimpleLog.eps'; 
-
-% create the plot
-setPlotProp(opt);
+plt.export('plotSimpleLog.eps'); 
     
