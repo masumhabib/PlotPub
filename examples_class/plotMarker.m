@@ -25,5 +25,5 @@ plt.MarkerSpacing = [15, 15, 15];
 plt.Legend = {'\theta = 0^o', '\theta = 45^o', '\theta = 90^o'}; % legends
 
 % Save? comment the following line if you do not want to save
-plt.export('plotMarkers.eps');
+plt.export('plotMarkers.png');
 

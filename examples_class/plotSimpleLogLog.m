@@ -27,5 +27,5 @@ plt.YGrid = 'on'; % 'on' or 'off'
 plt.XGrid = 'on'; % 'on' or 'off'
 
 % Save? comment the following line if you do not want to save
-plt.export('plotSimpleLogLog.eps'); 
+plt.export('plotSimpleLogLog.png'); 
     

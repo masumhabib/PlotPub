@@ -24,6 +24,6 @@ plt.YTick = [-10, 0, 10];
 plt.YLim = [-11, 11];
 
 % Save? comment the following line if you do not want to save
-plt.export('plotMultiple.tiff'); 
+plt.export('plotMultiple.png'); 
 
     

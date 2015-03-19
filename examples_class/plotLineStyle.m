@@ -15,6 +15,6 @@ plt.LineWidth = 2; % line width
 plt.LineStyle = {'--'}; % line style
 
 % Save? comment the following line if you do not want to save
-plt.export('plotLineStyle.eps'); 
+plt.export('plotLineStyle.png'); 
 
     

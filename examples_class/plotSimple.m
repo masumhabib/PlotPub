@@ -16,10 +16,10 @@ v = Vm*sin(th+phi);
 % plot it
 plt = Plot(t*1E3, v);
 
-% plt.Title = 'Voltage as a function of time'; % plot title
+plt.Title = 'Voltage as a function of time'; % plot title
 plt.XLabel = 'Time, t (ms)'; % xlabel
 plt.YLabel = 'Voltage, V (V)'; %ylabel
 
-plt.export('plotSimple.png');
+plt.export('plotSimple1.png');
 
     

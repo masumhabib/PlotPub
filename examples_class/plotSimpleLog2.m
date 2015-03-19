@@ -27,5 +27,5 @@ plt.YTick = [1E-3, 1E-1, 1E1, 1E3]; %[tick1, tick2, .. ]
 plt.YGrid = 'on'; % 'on' or 'off'
 
 % Save? comment the following line if you do not want to save
-plt.export('plotSimpleLog2.eps'); 
+plt.export('plotSimpleLog2.png'); 
     
