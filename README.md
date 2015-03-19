@@ -208,7 +208,8 @@ plt.export('plotMultiple.tiff');
 
 ```
 
-result:
+Note how Plot class constructor is directly used for plotting multiple 
+functions. Result:
 
 ![MQGv2.0: Multiple plots](https://github.com/masumhabib/PlotPub/blob/v2.0/examples/plotMultiple.png)
 
@@ -250,7 +251,8 @@ This code creates a figure with 7in x 5in box.
 See <code>plotSize.m</code> for more details.
 
 
-You can also load a previously saved MATLAB fig file and export it using <code>setPlotProp</code>:
+You can also load a previously saved MATLAB fig file and export it using 
+<code>Plot</code> class:
 
 ```matlab
 clear all;
@@ -449,6 +451,8 @@ N             %number of plots to be created. N &amp;lt;= length(X)
 opt           %options structure. Same as above.
 ```
 
+<h5>Project Page</h5>
+<hr />
 Please see the <a href="http://masumhabib.com/publication-quality-graphs-matlab">project page</a>.
 
 
