@@ -192,26 +192,62 @@ classdef Plot < handle
         
     methods
         % Constructor
-        function self = Plot(h, HoldLines)
-            if (nargin == 0)
+        function self = Plot(varargin)
+            pdata = {};
+            if nargin == 0
                 self.hfig = gcf;
                 self.holdLines = false;
-            elseif (nargin == 1)
-                if isempty(h)
+            elseif nargin == 1
+                if isempty(varargin{1})
                     self.hfig = gcf;
-                else
+                elseif ishandle(varargin{1})
                     self.hfig = h;
+                elseif ischar(varargin{1})
+                    open(varargin{1});
+                    self.hfig = gcf;
+                elseif isfloat(varargin{1})
+                    pdata{1} = varargin{1};
                 end
                 self.holdLines = false;
-            else
-                if isempty(h)
+            elseif nargin == 2
+                if isempty(varargin{1})
                     self.hfig = gcf;
-                else
+                elseif ishandle(varargin{1})
                     self.hfig = h;
-                end                
-                self.holdLines = HoldLines;
+                elseif ischar(varargin{1})
+                    open(varargin{1});
+                    self.hfig = gcf;
+                elseif isfloat(varargin{1})
+                    pdata{1} = varargin{1};
+                end
+                if isempty(varargin{2})
+                    self.holdLines = false;
+                elseif islogical(varargin{2})
+                    self.holdLines = varargin{2};
+                elseif isfloat(varargin{2})
+                    pdata{2} = varargin{2};
+                end
+            else
+                pdata = varargin;
             end
-                        
+            
+            np = length(pdata);
+            if np > 0
+                self.holdLines = false;
+                self.hfig = figure;
+                hold('on');
+                if np == 1
+                    plot(pdata{1});
+                elseif np == 2
+                    plot(pdata{1}, pdata{2});
+                else
+                    for ip = 1:2:np
+                        plot(pdata{ip}, pdata{ip+1});
+                    end
+                end
+                hold('off');
+            end
+            
             % get figure handles
             self.haxes = get(self.hfig, 'CurrentAxes');
             self.htitle = get(self.haxes, 'Title');
