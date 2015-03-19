@@ -211,7 +211,7 @@ plt.export('plotMultiple.tiff');
 Note how Plot class constructor is directly used for plotting multiple 
 functions. Result:
 
-![MQGv2.0: Multiple plots](https://github.com/masumhabib/PlotPub/blob/v2.0/examples/plotMultiple.png)
+![MQGv2.0: Multiple plots](https://github.com/masumhabib/PlotPub/blob/v2.0/examples_class/plotMultiple.png)
 
 The full source is given in <code>plotMultiple.m</code>. We can change the 
 linestyle, color etc and add a legend:
@@ -230,7 +230,7 @@ plt.MarkerSpacing = [15, 15, 15];
 plt.Legend = {'\theta = 0^o', '\theta = 45^o', '\theta = 90^o'}; % legends
 ```
 
-![MQGv2.0: Multiple plots markers](https://github.com/masumhabib/PlotPub/blob/v2.0/examples/plotMarkers.png)
+![MQGv2.0: Multiple plots markers](https://github.com/masumhabib/PlotPub/blob/v2.0/examples_class/plotMarkers.png)
 
 Here, <code>plt.Colors{1}</code>, <code>plt.LineWidth(1)</code> and 
 <code>plt.LineStyle{1}</code> set properties of data set 1 and so on. 
