@@ -183,6 +183,10 @@ classdef Plot < handle
         legendBox          % legend box, on/off
         legendBoxColor     % legend box color
         legendTextColor    % legend text color
+        
+        xMinorGrid
+        yMinorGrid
+        zMinorGrid
 
     end
         
@@ -582,6 +586,9 @@ classdef Plot < handle
         
         function set.XGrid(self, XGrid)
             set(self.haxes, 'XGrid' , XGrid);
+            % The minor grid seems to be changed with the major grid
+            % to fix this:
+            self.XMinorGrid = self.xMinorGrid; 
         end
         function XGrid = get.XGrid(self)
             XGrid = get(self.haxes, 'XGrid');
@@ -589,6 +596,9 @@ classdef Plot < handle
 
         function set.YGrid(self, YGrid)
             set(self.haxes, 'YGrid' , YGrid);
+            % The minor grid seems to be changed with the major grid
+            % to fix this:
+            self.YMinorGrid = self.yMinorGrid; 
         end
         function YGrid = get.YGrid(self)
             YGrid = get(self.haxes, 'YGrid');
@@ -596,6 +606,9 @@ classdef Plot < handle
 
         function set.ZGrid(self, ZGrid)
             set(self.haxes, 'ZGrid' , ZGrid);
+            % The minor grid seems to be changed with the major grid
+            % to fix this:
+            self.ZMinorGrid = self.zMinorGrid;             
         end
         function ZGrid = get.ZGrid(self)
             ZGrid = get(self.haxes, 'ZGrid');
@@ -603,6 +616,7 @@ classdef Plot < handle
 
         function set.XMinorGrid(self, XMinorGrid)
             set(self.haxes, 'XMinorGrid' , XMinorGrid);
+            self.xMinorGrid = XMinorGrid;
         end
         function XMinorGrid = get.XMinorGrid(self)
             XMinorGrid = get(self.haxes, 'XMinorGrid');
@@ -610,6 +624,7 @@ classdef Plot < handle
 
         function set.YMinorGrid(self, YMinorGrid)
             set(self.haxes, 'YMinorGrid' , YMinorGrid);
+            self.yMinorGrid = YMinorGrid;            
         end
         function YMinorGrid = get.YMinorGrid(self)
             YMinorGrid = get(self.haxes, 'YMinorGrid');
@@ -617,6 +632,7 @@ classdef Plot < handle
 
         function set.ZMinorGrid(self, ZMinorGrid)
             set(self.haxes, 'ZMinorGrid' , ZMinorGrid);
+            self.zMinorGrid = ZMinorGrid;
         end
         function ZMinorGrid = get.ZMinorGrid(self)
             ZMinorGrid = get(self.haxes, 'ZMinorGrid');
