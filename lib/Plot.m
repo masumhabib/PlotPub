@@ -239,7 +239,7 @@ classdef Plot < handle
                 if isempty(varargin{1})
                     self.hfig = gcf;
                 elseif ishandle(varargin{1})
-                    self.hfig = h;
+                    self.hfig = varargin{1};
                 elseif ischar(varargin{1})
                     open(varargin{1});
                     self.hfig = gcf;
@@ -251,7 +251,7 @@ classdef Plot < handle
                 if isempty(varargin{1})
                     self.hfig = gcf;
                 elseif ishandle(varargin{1})
-                    self.hfig = h;
+                    self.hfig = varargin{1};
                 elseif ischar(varargin{1})
                     open(varargin{1});
                     self.hfig = gcf;
