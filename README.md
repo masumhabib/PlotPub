@@ -16,11 +16,10 @@ and export PQGs using one function call and a simple structure.
 <hr />
 <ul>
     <li>Fixed constructor for user supplied handle. Thanks to
-    [Hythem Sidky!](github.com/hsidky)</li>
+    <a href="https://github.com/hsidky">Hythem Sidky</a>.</li>
 
     <li>Added a new function, <code>setPlotProp2(hfig, opt)</code> 
-    for compatibility with MATLAB line and patch functions. Thanks 
-    to [Yair Altman!](github.com/altmany)</li>
+    for compatibility with MATLAB line and patch functions.</li>
 </ul>
 
 <h4>New features of v2.x</h4>
