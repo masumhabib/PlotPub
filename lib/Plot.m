@@ -87,7 +87,7 @@ classdef Plot < handle
 %
 % Distributed under the BSD License.
 %
-% Version: 2.0
+% Version: 2.1
 %
 
 
