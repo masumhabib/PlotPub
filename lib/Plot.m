@@ -124,7 +124,7 @@ classdef Plot < handle
             plot.YMinorGrid      = 'off';
             plot.ZMinorGrid      = 'off';
             plot.LegendBox       = 'off';
-            plot.LegendBoxColor  = 'none';
+            plot.LegendBoxColor  = [1,1,1];
             plot.LegendTextColor = [0,0,0];
             plot.MarkerSpacing   = 5;
             plot.Markers         = '';            
