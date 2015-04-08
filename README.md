@@ -12,6 +12,13 @@ etc. Here, I present PlotPub which is a collection of MATLAB functions and
 a MATLAB class that allows you to modify almost all aspects of MATLAB figures 
 and export PQGs using one function call and a simple structure.
 
+<h4>What's new in v2.1.1</h4>
+<hr />
+<ul>
+    <li>Fixed bug # 6. Thanks to <a href="https://github.com/ChuntaoLu">ChuntaoLu</a>.</li>
+</ul>
+
+
 <h4>What's new in v2.1</h4>
 <hr />
 <ul>
