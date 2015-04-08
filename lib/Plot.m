@@ -888,8 +888,11 @@ classdef Plot < handle
             % positioning
             % set the box size
             set(self.haxes, 'Position', BoxPos);
-            % set the figure size and position
-            pos = get(self.hfig, 'Position');
+            % get the monitor size
+            set(0, 'Units', 'inch');
+            monitorPos = get(0,'MonitorPositions');
+            % put the figure at the middle of the monitor
+            pos = [monitorPos(3)/2-self.boxDim(1)/2, monitorPos(4)/2-self.boxDim(2)/2];
             outerpos = get(self.haxes, 'OuterPosition');
             if ~isempty(outerpos)
                 set(self.haxes, 'OuterPosition',[0, 0, outerpos(3), outerpos(4)]);
