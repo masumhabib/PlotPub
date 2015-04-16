@@ -16,6 +16,7 @@ and export PQGs using one function call and a simple structure.
 <hr />
 <ul>
     <li>Fixed bug # 6. Thanks to <a href="https://github.com/ChuntaoLu">ChuntaoLu</a>.</li>
+    <li>Fixed bug # 5. Thanks to <a href="https://github.com/protik77">Protik Das</a>.</li>
 </ul>
 
 
