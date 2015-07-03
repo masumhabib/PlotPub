@@ -152,7 +152,10 @@ classdef Plot < handle
         ZLabel                             
         XTick        
         YTick        
-        ZTick        
+        ZTick
+        XTickLabel
+        YTickLabel
+        ZTickLabel
         XMinorTick
         YMinorTick
         ZMinorTick
@@ -307,12 +310,15 @@ classdef Plot < handle
             self.hp = tmp;
             
             self.legendText = cell(self.N, 1);
-            
-            % get the self data
-            for ip = 1:self.N
-                self.xdata{ip} = get(self.hp{ip},'XData');
-                self.ydata{ip} = get(self.hp{ip},'YData');
-                self.zdata{ip} = get(self.hp{ip},'ZData');
+            try 
+                % get the self data
+                for ip = 1:self.N
+                    self.xdata{ip} = get(self.hp{ip},'XData');
+                    self.ydata{ip} = get(self.hp{ip},'YData');
+                    self.zdata{ip} = get(self.hp{ip},'ZData');
+                end
+            catch e 
+                warning('Unable to get data from all axes: %s',e.message);
             end
             
             % set dimension unit
@@ -566,7 +572,7 @@ classdef Plot < handle
         function XTick = get.XTick(self)
             XTick = get(self.haxes, 'XTick');
         end
-        
+                
         function set.YTick(self, YTick)
             set(self.haxes, 'YTick' , YTick);
         end
@@ -579,6 +585,27 @@ classdef Plot < handle
         end
         function ZTick = get.ZTick(self)
             ZTick = get(self.haxes, 'ZTick');
+        end
+        
+        function set.XTickLabel(self, XTickLabel)
+            set(self.haxes, 'XTickLabel' , XTickLabel);
+        end
+        function XTickLabel = get.XTickLabel(self)
+            XTickLabel = get(self.haxes, 'XTickLabel');
+        end
+                
+        function set.YTickLabel(self, YTickLabel)
+            set(self.haxes, 'YTickLabel' , YTickLabel);
+        end
+        function YTickLabel = get.YTickLabel(self)
+            YTickLabel = get(self.haxes, 'YTickLabel');
+        end
+        
+        function set.ZTickLabel(self, ZTickLabel)
+            set(self.haxes, 'ZTickLabel' , ZTickLabel);
+        end
+        function ZTickLabel = get.ZTickLabel(self)
+            ZTickLabel = get(self.haxes, 'ZTickLabel');
         end
 
         function set.XMinorTick(self, XMinorTick)
@@ -873,6 +900,10 @@ classdef Plot < handle
                 print(self.hfig, '-dpng', '-opengl', sprintf('-r%d', self.Resolution), FileName);
             elseif strcmpi(fileType, 'tiff') 
                 print(self.hfig, '-dtiff', '-opengl', sprintf('-r%d', self.Resolution), FileName);
+            elseif strcmpi(fileType, 'svg')
+                print(self.hfig, '-dsvg', '-opengl', sprintf('-r%d', self.Resolution), FileName);
+            elseif strcmpi(fileType, 'fig')
+                savefig(self.hfig, FileName);
             else
                 err = MException('', ...
                     '=====> ERROR: File type %s is not supported. ', fileType);
