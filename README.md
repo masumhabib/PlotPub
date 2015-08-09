@@ -12,7 +12,7 @@ etc. Here, I present PlotPub which is a collection of MATLAB functions and
 a MATLAB class that allows you to modify almost all aspects of MATLAB figures 
 and export PQGs using one function call and a simple structure.
 
-<h4>What's new in v2.1.1</h4>
+<h4>What's new in v2.2</h4>
 <hr />
 <ul>
     <li>Added SVG and fig to exports (issue # 9). Thanks to <a href="https://github.com/hsidky">Hythem Sidky</a></li>

@@ -64,7 +64,7 @@ function h = setPlotProp2(hfig, opt)
 %
 % Distributed under the BSD License.
 %
-% Version: 2.1.1
+% Version: 2.2
 %
 
 h = setPlotProp(opt, hfig);

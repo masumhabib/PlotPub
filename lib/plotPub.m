@@ -63,7 +63,7 @@ function h = plotPub(X, Y, N, opt)
 %
 % Distributed under the BSD License.
 %
-% Version: 2.1.1
+% Version: 2.2
 %
 
 if nargin ~= 4
