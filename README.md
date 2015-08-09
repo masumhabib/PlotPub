@@ -15,6 +15,8 @@ and export PQGs using one function call and a simple structure.
 <h4>What's new in v2.1.1</h4>
 <hr />
 <ul>
+    <li>Added SVG and fig to exports (issue # 9). Thanks to <a href="https://github.com/hsidky">Hythem Sidky</a></li>
+    <li>Added X/Y/ZTickLabels. Thanks to <a href="https://github.com/hsidky">Hythem Sidky</a>.</li>
     <li>Fixed bug # 6. Thanks to <a href="https://github.com/ChuntaoLu">ChuntaoLu</a>.</li>
     <li>Fixed bug # 5. Thanks to <a href="https://github.com/protik77">Protik Das</a>.</li>
 </ul>
