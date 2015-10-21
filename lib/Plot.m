@@ -920,7 +920,8 @@ classdef Plot < handle
             % set the box size
             set(self.haxes, 'Position', BoxPos);
             % get the monitor size
-            set(0, 'Units', 'inch');
+            % Changed to point to make it work on R2014b for PDF output
+            set(0, 'Units', 'point');
             monitorPos = get(0,'MonitorPositions');
             % put the figure at the middle of the monitor
             pos = [monitorPos(1, 3)/2-self.boxDim(1)/2, monitorPos(1, 4)/2-self.boxDim(2)/2];
@@ -931,6 +932,10 @@ classdef Plot < handle
             end
             % for paper position in the eps
             set(self.hfig, 'PaperPositionMode', 'auto');
+
+            % Added PaperSize to make it work on R2014b for PDF output
+            % Resulting images are bit bigger (e.g. 6in -> 7.75in)
+            set(self.hfig, 'PaperSize', [outerpos(3), outerpos(4)]);
         end
 
         function h = findLegendHandle(self)
