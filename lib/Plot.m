@@ -1,23 +1,23 @@
 classdef Plot < handle
-% 
+%
 % Plot class for Publication Quality Plot in MATLAB
-% 
+%
 % This class represents a MATLAB figure. It can create new plots, open
 % saved figure files and change properties of opened/existing figures.
-% It can also export figures as publication quality image files. 
-% The resolution of the image can be changed by the user. Supported image 
-% formats are EPS, PDF, PNG, JPEG and TIFF. The figure properties can be 
+% It can also export figures as publication quality image files.
+% The resolution of the image can be changed by the user. Supported image
+% formats are EPS, PDF, PNG, JPEG and TIFF. The figure properties can be
 % changed by easy-to-remember class properties.
 %
 % Construction:
-%   Plot()        
+%   Plot()
 %     Grabs the current figure.
-%   Plot(handle)  
+%   Plot(handle)
 %     Grabs the figure pointed by handle.
-%   Plot('filename.fig') 
+%   Plot('filename.fig')
 %     Opens the figure file ('filename.fig') and use the opened figure.
-%   Plot(handle, holdLine) 
-%     Grabs the figure pointed by handle. If holdLine = true, it does not 
+%   Plot(handle, holdLine)
+%     Grabs the figure pointed by handle. If holdLine = true, it does not
 %     change the plot properties.
 %   Plot(Y)
 %     Plots Y where Y must be a vector.
@@ -25,26 +25,26 @@ classdef Plot < handle
 %     Plots Y vs X. Both X and Y must be vectors.
 %   Plot(X1, Y1, X2, Y2, ...)
 %     Plots Y's vs X's. X's and Y's must be vectors.
-%   
-%   Returns a plot object which can be used for subsequent property 
+%
+%   Returns a plot object which can be used for subsequent property
 %   changes.
 %
 % Properties:
-%   BoxDim:       vector [width, height]: size of the axes box in inches; 
+%   BoxDim:       vector [width, height]: size of the axes box in inches;
 %                 default: [6, 2.5]
 %   ShowBox:      'on' = show or 'off' = hide bounding box
 %   FontName:     string: font name; default: 'Helvetica'
 %   FontSize:     integer; default: 26
-%   LineWidth:    vector [width1, width2, ..]: element i changes the 
+%   LineWidth:    vector [width1, width2, ..]: element i changes the
 %                 property of i-th dataset; default: 2
-%   LineStyle:    cell array {'style1', 'style2', ..}: element i changes 
+%   LineStyle:    cell array {'style1', 'style2', ..}: element i changes
 %                 the property of i-th dataset; default: '-'
 %   LineCount:    Number of plots (readonly)
-%   Markers:      cell array {'marker1', 'marker2', ..}: element i changes 
+%   Markers:      cell array {'marker1', 'marker2', ..}: element i changes
 %                 the property of i-th dataset; default: 'None'
-%   MarkerSpacing:vector [space1, space2, ..]: element i changes the 
+%   MarkerSpacing:vector [space1, space2, ..]: element i changes the
 %                 property of i-th dataset; default: 0
-%   Colors:       3xN matrix, [red, green, blue] where N is the number of 
+%   Colors:       3xN matrix, [red, green, blue] where N is the number of
 %                 datasets.
 %   AxisColor:    axis color, [red, green, blue]; default black.
 %   AxisLineWidth:axis line width, number; default 2.
@@ -78,7 +78,7 @@ classdef Plot < handle
 %   LegendLoc:    'NorthEast', ..., 'SouthWest': legend location
 %   Title:        plot title, string
 %   Resolution:   Resolution (dpi) for bitmapped file. Default:600.
-%   HoldLines:    true/false. true == only modify axes settings, do not 
+%   HoldLines:    true/false. true == only modify axes settings, do not
 %                 touch plot lines/surfaces. Default false.
 %
 %
@@ -94,12 +94,12 @@ classdef Plot < handle
     methods (Hidden, Access = private)
         function setDefaultProperties(plot)
             % Default properties. Change to your taste.
-            plot.BoxDim          = [6, 3];  
+            plot.BoxDim          = [6, 3];
             plot.ShowBox         = 'on';
-            plot.FontName        = 'Arial'; 
+            plot.FontName        = 'Arial';
             plot.FontSize        = 20;
             plot.LineWidth       = 2.5;
-            plot.LineStyle       = '-'; 
+            plot.LineStyle       = '-';
             plot.Colors          = {
                                     [ 0.16,     0.44,    1.00 ],...
                                     [ 0.93,     0.00,    0.00 ],...
@@ -112,7 +112,7 @@ classdef Plot < handle
                                     [ 0.50,     0.57,    0.00 ],...
                                     [ 0.00,     0.00,    0.00 ]
                                    };
-            
+
             plot.AxisColor       = [0.0 0.0 0.0];
             plot.AxisLineWidth   = 1.5;
             plot.XMinorTick      = 'on';
@@ -127,17 +127,17 @@ classdef Plot < handle
             plot.LegendBoxColor  = [1,1,1];
             plot.LegendTextColor = [0,0,0];
             plot.MarkerSpacing   = 5;
-            plot.Markers         = '';            
+            plot.Markers         = '';
 
             plot.Resolution      = 600;
         end
     end
 
     % Public properties
-    properties (Dependent = true) 
-        BoxDim   
+    properties (Dependent = true)
+        BoxDim
         ShowBox
-        FontName   
+        FontName
         FontSize
         LineWidth
         LineStyle
@@ -147,11 +147,11 @@ classdef Plot < handle
         Colors
         AxisColor
         AxisLineWidth
-        XLabel       
-        YLabel       
-        ZLabel                             
-        XTick        
-        YTick        
+        XLabel
+        YLabel
+        ZLabel
+        XTick
+        YTick
         ZTick
         XTickLabel
         YTickLabel
@@ -161,47 +161,47 @@ classdef Plot < handle
         ZMinorTick
         TickDir
         TickLength
-        XLim         
-        YLim         
-        ZLim         
-        XScale       
-        YScale       
-        ZScale       
-        XGrid        
-        YGrid        
-        ZGrid  
+        XLim
+        YLim
+        ZLim
+        XScale
+        YScale
+        ZScale
+        XGrid
+        YGrid
+        ZGrid
         XMinorGrid
         YMinorGrid
         ZMinorGrid
-        XDir         
-        YDir         
-        ZDir         
-        Legend  
+        XDir
+        YDir
+        ZDir
+        Legend
         LegendBox
         LegendBoxColor
         LegendTextColor
-        LegendLoc    
-        Title         
+        LegendLoc
+        Title
     end
-    
+
     % independent public properties
-    properties 
+    properties
         Resolution
     end
-    
+
 
     % Private properties
     properties(Hidden, SetAccess = private, GetAccess = private)
         % Handles
         hfig        % Figure
         haxes       % Axes
-        
+
         htitle      % Title
-        
+
         hxlabel     % XLabel
         hylabel     % YLabel
         hzlabel     % ZLabel
-        
+
         hp          % plot handle
         hm          % plot handle for marker plots
         hfm         % plot handle for fake marker plots
@@ -209,9 +209,9 @@ classdef Plot < handle
         xdata       % x coordinates of the plots
         ydata       % y coordinates of the plots
         zdata       % z coordinates of the plots
-        
+
         holdLines   % if true, do not change existing plots.
-        
+
         % private helper members
         boxDim      % The box dimension, private member. Needed since matlab changes the box dimension when fonts are changed.
         legendText  % legend text cell-array
@@ -224,13 +224,13 @@ classdef Plot < handle
         legendBox          % legend box, on/off
         legendBoxColor     % legend box color
         legendTextColor    % legend text color
-        
+
         xMinorGrid
         yMinorGrid
         zMinorGrid
 
     end
-        
+
     methods
         % Constructor
         function self = Plot(varargin)
@@ -271,7 +271,7 @@ classdef Plot < handle
             else
                 pdata = varargin;
             end
-            
+
             np = length(pdata);
             if np > 0
                 self.holdLines = false;
@@ -288,15 +288,15 @@ classdef Plot < handle
                 end
                 hold('off');
             end
-            
+
             % get figure handles
             self.haxes = get(self.hfig, 'CurrentAxes');
             self.htitle = get(self.haxes, 'Title');
-            
+
             self.hxlabel = get(self.haxes, 'XLabel');
             self.hylabel = get(self.haxes, 'YLabel');
             self.hzlabel = get(self.haxes, 'ZLabel');
-            
+
             % get the self handles
             self.hp = get(self.haxes, 'Children');
             self.N = length(self.hp);
@@ -308,34 +308,34 @@ classdef Plot < handle
                 tmp{ihp} = self.hp(end-ihp+1);
             end
             self.hp = tmp;
-            
+
             self.legendText = cell(self.N, 1);
-            try 
+            try
                 % get the self data
                 for ip = 1:self.N
                     self.xdata{ip} = get(self.hp{ip},'XData');
                     self.ydata{ip} = get(self.hp{ip},'YData');
                     self.zdata{ip} = get(self.hp{ip},'ZData');
                 end
-            catch e 
+            catch e
                 warning('Unable to get data from all axes: %s',e.message);
             end
-            
+
             % set dimension unit
             set(self.hfig, 'Units', 'inches', 'Color', [1,1,1]);
             set(self.haxes,'Units', 'inches');
-            
+
             % apply default properties
-            self.setDefaultProperties()            
+            self.setDefaultProperties()
         end
-        
+
         function addPlot(self, X, Y)
             if ~isempty(self.haxes)
                 hold(self.haxes, 'on');
             end
             self.hp{end+1} = plot(X,Y);
         end
-        
+
         function set.BoxDim(self, value)
             self.boxDim = value;
             self.adjustBoxDim();
@@ -345,7 +345,7 @@ classdef Plot < handle
             value(1) = pos(3);
             value(2) = pos(4);
         end
-        
+
         function set.ShowBox(self, ShowBox)
             set(self.haxes, 'Box', ShowBox);
         end
@@ -363,7 +363,7 @@ classdef Plot < handle
             if isfield(self, 'hlegend')
                 set(self.hlegend, 'FontName', FontName);
             end
-            % re-adjust box dimension since changing font name might 
+            % re-adjust box dimension since changing font name might
             % also result in change in box dimension.
             self.adjustBoxDim();
         end
@@ -381,17 +381,17 @@ classdef Plot < handle
             if isfield(self, 'hlegend')
                 set(self.hlegend, 'FontSize', FontSize);
             end
-            % re-adjust box dimension since changing font size might 
+            % re-adjust box dimension since changing font size might
             % also result in change in box dimension.
             self.adjustBoxDim();
         end
         function FontSize = get.FontSize(self)
             FontSize = get(self.haxes, 'FontSize');
         end
-  
+
         function set.LineWidth(self, LineWidth)
             if self.holdLines == false
-                for ii=1:self.N   
+                for ii=1:self.N
                     if ii > length(LineWidth)
                         self.lineWidth(ii) = LineWidth(end);
                     else
@@ -399,7 +399,7 @@ classdef Plot < handle
                     end
                     set(self.hp{ii}, 'LineWidth', self.lineWidth(ii));
                 end
-            end 
+            end
         end
         function LineWidth = get.LineWidth(self)
             LineWidth = self.lineWidth;
@@ -412,7 +412,7 @@ classdef Plot < handle
                 LineStyle{1} = tmp;
             end
             if self.holdLines == false
-                for ii=1:self.N   
+                for ii=1:self.N
                     if ii > length(LineStyle)
                        self.lineStyle{ii} = LineStyle{end};
                     else
@@ -420,12 +420,12 @@ classdef Plot < handle
                     end
                     set(self.hp{ii}, 'LineStyle', self.lineStyle{ii});
                 end
-            end 
+            end
         end
         function LineStyle = get.LineStyle(self)
             LineStyle = self.lineStyle;
         end
-        
+
         function LineCount = get.LineCount(self)
             LineCount = size(self.hp,1);
         end
@@ -437,17 +437,17 @@ classdef Plot < handle
                 Markers{1} = tmp;
             end
             if self.holdLines == false
-                for ii=1:self.N   
+                for ii=1:self.N
                     if ii > length(Markers)
                         self.markers{ii} = Markers{end};
                     else
                         self.markers{ii} = Markers{ii};
                     end
-                    
+
                     if strcmp(self.markers{ii}, '')
                         self.markers{ii} = 'None';
                     end
-                    
+
                     if ~strcmp(self.markers{ii}, 'None')
                         if isempty(self.hm{ii}) && ~strcmp(self.markers{ii}, 'None')
                             X = self.xdata{ii};
@@ -462,12 +462,12 @@ classdef Plot < handle
                           'Color'           , self.colors{ii}, ...
                           'MarkerEdgeColor' , 'none',...
                           'MarkerFaceColor' , self.colors{ii}, ...
-                          'MarkerSize'      , 3*self.lineWidth(ii)); 
-                    
+                          'MarkerSize'      , 3*self.lineWidth(ii));
+
                         if isempty(self.hfm{ii})
                             X = self.xdata{ii};
                             Y = self.ydata{ii};
-                        
+
                             hold(self.haxes, 'on')
                             self.hfm{ii} = plot(X, Y);
                         end
@@ -480,32 +480,32 @@ classdef Plot < handle
                           'MarkerSize'      , 3*self.lineWidth(ii), ...
                           'LineWidth'       , self.lineWidth(ii),...
                           'Visible'         , 'off');
-                    end                       
+                    end
                 end
-            end 
+            end
         end
         function Markers = get.Markers(self)
             Markers = self.markers;
         end
         function set.MarkerSpacing(self, MarkerSpacing)
             if self.holdLines == false
-                for ii=1:self.N   
+                for ii=1:self.N
                     if ii > length(MarkerSpacing)
                        self.markerSpacing(ii) = MarkerSpacing(end);
                     else
                        self.markerSpacing(ii) = MarkerSpacing(ii);
                     end
                 end
-            end 
+            end
         end
-        
+
         function MarkerSpacing = get.MarkerSpacing(self)
             MarkerSpacing = self.markerSpacing;
         end
-        
+
         function set.Colors(self, Colors)
             if self.holdLines == false
-                for ii=1:self.N   
+                for ii=1:self.N
                     if ii > size(Colors)
                        self.colors{ii} = Colors{end};
                     else
@@ -517,14 +517,14 @@ classdef Plot < handle
                     end
                     if ~isempty(self.hfm{ii})
                         set(self.hfm{ii}, 'Color', self.colors{ii}, 'MarkerFaceColor' , self.colors{ii});
-                    end                    
+                    end
                 end
-            end 
+            end
         end
         function Colors = get.Colors(self)
             Colors = self.colors;
-        end        
-        
+        end
+
         function set.AxisColor(self, AxisColor)
             set(self.haxes    , ...
                 'XColor'      , AxisColor, ...
@@ -534,14 +534,14 @@ classdef Plot < handle
         function AxisColor = get.AxisColor(self)
             AxisColor = get(self.haxes, 'XColor');
         end
-        
+
         function set.AxisLineWidth(self, AxisLineWidth)
             set(self.haxes, 'LineWidth' , AxisLineWidth);
         end
         function AxisLineWidth = get.AxisLineWidth(self)
             AxisLineWidth = get(self.haxes, 'LineWidth');
         end
-        
+
         function set.XLabel(self, XLabel)
             set(self.hxlabel, 'String', XLabel);
             self.adjustBoxDim();
@@ -557,7 +557,7 @@ classdef Plot < handle
         function YLabel = get.YLabel(self)
             YLabel = get(self.hylabel, 'String');
         end
-        
+
         function set.ZLabel(self, ZLabel)
             set(self.hzlabel, 'String', ZLabel);
             self.adjustBoxDim();
@@ -572,35 +572,35 @@ classdef Plot < handle
         function XTick = get.XTick(self)
             XTick = get(self.haxes, 'XTick');
         end
-                
+
         function set.YTick(self, YTick)
             set(self.haxes, 'YTick' , YTick);
         end
         function YTick = get.YTick(self)
             YTick = get(self.haxes, 'YTick');
         end
-        
+
         function set.ZTick(self, ZTick)
             set(self.haxes, 'ZTick' , ZTick);
         end
         function ZTick = get.ZTick(self)
             ZTick = get(self.haxes, 'ZTick');
         end
-        
+
         function set.XTickLabel(self, XTickLabel)
             set(self.haxes, 'XTickLabel' , XTickLabel);
         end
         function XTickLabel = get.XTickLabel(self)
             XTickLabel = get(self.haxes, 'XTickLabel');
         end
-                
+
         function set.YTickLabel(self, YTickLabel)
             set(self.haxes, 'YTickLabel' , YTickLabel);
         end
         function YTickLabel = get.YTickLabel(self)
             YTickLabel = get(self.haxes, 'YTickLabel');
         end
-        
+
         function set.ZTickLabel(self, ZTickLabel)
             set(self.haxes, 'ZTickLabel' , ZTickLabel);
         end
@@ -642,14 +642,14 @@ classdef Plot < handle
         function TickLength = get.TickLength(self)
             TickLength = get(self.haxes, 'TickLength');
         end
-        
+
         function set.XLim(self, XLim)
             set(self.haxes, 'XLim' , XLim);
         end
         function XLim = get.XLim(self)
             XLim = get(self.haxes, 'XLim');
         end
-        
+
         function set.YLim(self, YLim)
             set(self.haxes, 'YLim' , YLim);
         end
@@ -669,51 +669,51 @@ classdef Plot < handle
         end
         function XScale = get.XScale(self)
             XScale = get(self.haxes, 'XScale');
-        end        
+        end
 
         function set.YScale(self, YScale)
             set(self.haxes, 'YScale' , YScale);
         end
         function YScale = get.YScale(self)
             YScale = get(self.haxes, 'YScale');
-        end                
+        end
 
         function set.ZScale(self, ZScale)
             set(self.haxes, 'ZScale' , ZScale);
         end
         function ZScale = get.ZScale(self)
             ZScale = get(self.haxes, 'ZScale');
-        end                
-        
+        end
+
         function set.XGrid(self, XGrid)
             set(self.haxes, 'XGrid' , XGrid);
             % The minor grid seems to be changed with the major grid
             % to fix this:
-            self.XMinorGrid = self.xMinorGrid; 
+            self.XMinorGrid = self.xMinorGrid;
         end
         function XGrid = get.XGrid(self)
             XGrid = get(self.haxes, 'XGrid');
-        end                
+        end
 
         function set.YGrid(self, YGrid)
             set(self.haxes, 'YGrid' , YGrid);
             % The minor grid seems to be changed with the major grid
             % to fix this:
-            self.YMinorGrid = self.yMinorGrid; 
+            self.YMinorGrid = self.yMinorGrid;
         end
         function YGrid = get.YGrid(self)
             YGrid = get(self.haxes, 'YGrid');
-        end                
+        end
 
         function set.ZGrid(self, ZGrid)
             set(self.haxes, 'ZGrid' , ZGrid);
             % The minor grid seems to be changed with the major grid
             % to fix this:
-            self.ZMinorGrid = self.zMinorGrid;             
+            self.ZMinorGrid = self.zMinorGrid;
         end
         function ZGrid = get.ZGrid(self)
             ZGrid = get(self.haxes, 'ZGrid');
-        end                
+        end
 
         function set.XMinorGrid(self, XMinorGrid)
             set(self.haxes, 'XMinorGrid' , XMinorGrid);
@@ -721,15 +721,15 @@ classdef Plot < handle
         end
         function XMinorGrid = get.XMinorGrid(self)
             XMinorGrid = get(self.haxes, 'XMinorGrid');
-        end                
+        end
 
         function set.YMinorGrid(self, YMinorGrid)
             set(self.haxes, 'YMinorGrid' , YMinorGrid);
-            self.yMinorGrid = YMinorGrid;            
+            self.yMinorGrid = YMinorGrid;
         end
         function YMinorGrid = get.YMinorGrid(self)
             YMinorGrid = get(self.haxes, 'YMinorGrid');
-        end                
+        end
 
         function set.ZMinorGrid(self, ZMinorGrid)
             set(self.haxes, 'ZMinorGrid' , ZMinorGrid);
@@ -737,34 +737,34 @@ classdef Plot < handle
         end
         function ZMinorGrid = get.ZMinorGrid(self)
             ZMinorGrid = get(self.haxes, 'ZMinorGrid');
-        end                
-        
+        end
+
         function set.XDir(self, XDir)
             set(self.haxes, 'XDir' , XDir);
         end
         function XDir = get.XDir(self)
             XDir = get(self.haxes, 'XDir');
-        end                        
+        end
 
         function set.YDir(self, YDir)
             set(self.haxes, 'YDir' , YDir);
         end
         function YDir = get.YDir(self)
             YDir = get(self.haxes, 'YDir');
-        end                        
+        end
 
         function set.ZDir(self, ZDir)
             set(self.haxes, 'ZDir' , ZDir);
         end
         function ZDir = get.ZDir(self)
             ZDir = get(self.haxes, 'ZDir');
-        end                        
+        end
 
         function set.Legend(self, Legend)
             hp1 = [];
             text1 = [];
             il = 1;
-            for ii = 1:self.N           
+            for ii = 1:self.N
                 if ii <= length(Legend)
                     self.legendText{ii} = Legend{ii};
                 end
@@ -776,7 +776,7 @@ classdef Plot < handle
                     end
                     text1{il} = self.legendText{ii};
                     il = il + 1;
-                end                
+                end
             end
             self.hlegend = legend(hp1, text1);
             set(self.hlegend, 'Box', self.legendBox);
@@ -791,7 +791,7 @@ classdef Plot < handle
             if isempty(self.hlegend)
                 self.hlegend = self.findLegendHandle();
             end
-            
+
             if ~isempty(self.hlegend)
                 set(self.hlegend, 'Box', LegendBox);
             end
@@ -802,7 +802,7 @@ classdef Plot < handle
             if isempty(self.hlegend)
                 self.hlegend = self.findLegendHandle();
             end
-            
+
             if ~isempty(self.hlegend)
                 LegendBox = get(self.hlegend, 'Box');
             end
@@ -813,7 +813,7 @@ classdef Plot < handle
             if isempty(self.hlegend)
                 self.hlegend = self.findLegendHandle();
             end
-            
+
             if ~isempty(self.hlegend)
                 set(self.hlegend, 'Color', LegendBoxColor);
             end
@@ -824,7 +824,7 @@ classdef Plot < handle
             if isempty(self.hlegend)
                 self.hlegend = self.findLegendHandle();
             end
-            
+
             if ~isempty(self.hlegend)
                 LegendBoxColor = get(self.hlegend, 'Color');
             end
@@ -834,7 +834,7 @@ classdef Plot < handle
             if isempty(self.hlegend)
                 self.hlegend = self.findLegendHandle();
             end
-            
+
             if ~isempty(self.hlegend)
                 set(self.hlegend, 'TextColor', LegendTextColor);
             end
@@ -845,7 +845,7 @@ classdef Plot < handle
             if isempty(self.hlegend)
                 self.hlegend = self.findLegendHandle();
             end
-            
+
             if ~isempty(self.hlegend)
                 LegendTextColor = get(self.hlegend, 'TextColor');
             end
@@ -856,7 +856,7 @@ classdef Plot < handle
             if isempty(self.hlegend)
                 self.hlegend = self.findLegendHandle();
             end
-            
+
             if ~isempty(self.hlegend)
                 set(self.hlegend, 'location', LegendLoc);
             end
@@ -866,13 +866,13 @@ classdef Plot < handle
             if isempty(self.hlegend)
                 self.hlegend = self.findLegendHandle();
             end
-            
+
             if ~isempty(self.hlegend)
                 LegendLoc = get(self.hlegend, 'location');
             end
 
         end
-        
+
         function set.Title(self, Title)
             set(self.htitle, 'String', Title);
             self.adjustBoxDim();
@@ -880,7 +880,7 @@ classdef Plot < handle
         function Title = get.Title(self)
             Title = get(self.htitle, 'String');
         end
-        
+
         % save to disk
         function export(self, FileName)
             fileType = strread(FileName, '%s', 'delimiter', '.');
@@ -896,9 +896,9 @@ classdef Plot < handle
                 print(self.hfig, '-dpdf', FileName);
             elseif strcmpi(fileType, 'jpg') || strcmpi(fileType, 'jpeg')
                 print(self.hfig, '-djpeg', '-opengl', sprintf('-r%d', self.Resolution), FileName);
-            elseif strcmpi(fileType, 'png') 
+            elseif strcmpi(fileType, 'png')
                 print(self.hfig, '-dpng', '-opengl', sprintf('-r%d', self.Resolution), FileName);
-            elseif strcmpi(fileType, 'tiff') 
+            elseif strcmpi(fileType, 'tiff')
                 print(self.hfig, '-dtiff', '-opengl', sprintf('-r%d', self.Resolution), FileName);
             elseif strcmpi(fileType, 'svg')
                 print(self.hfig, '-dsvg', '-opengl', sprintf('-r%d', self.Resolution), FileName);
@@ -908,11 +908,11 @@ classdef Plot < handle
                 err = MException('', ...
                     '=====> ERROR: File type %s is not supported. ', fileType);
                 throw(err);
-            end            
+            end
         end
-        
+
     end
-    
+
     methods(Hidden, Access = private)
         function adjustBoxDim(self)
             BoxPos = [1, 1, self.boxDim(1), self.boxDim(2)];
@@ -930,15 +930,11 @@ classdef Plot < handle
                 set(self.hfig, 'Position', [pos(1), pos(2), outerpos(3), outerpos(4)]);
             end
             % for paper position in the eps
-            set(self.hfig, 'PaperPositionMode', 'auto');            
+            set(self.hfig, 'PaperPositionMode', 'auto');
         end
-        
+
         function h = findLegendHandle(self)
             h = findobj(self.hfig,'Type','axes','Tag','legend');
         end
     end
 end
-
-
-
-
