@@ -76,6 +76,7 @@ classdef Plot < handle
 %   LegendBoxColor: color of the bounding box of legend; default: 'none'
 %   LegendTextColor: color of the legend text; default: [0,0,0]
 %   LegendLoc:    'NorthEast', ..., 'SouthWest': legend location
+%   LegendOrientation:  'horizontal' or 'vertical: 'Orientation of the legend; default: 'vertical'
 %   Title:        plot title, string
 %   Resolution:   Resolution (dpi) for bitmapped file. Default:600.
 %   HoldLines:    true/false. true == only modify axes settings, do not 
@@ -181,6 +182,7 @@ classdef Plot < handle
         LegendBoxColor
         LegendTextColor
         LegendLoc    
+        LegendOrientation
         Title         
     end
     
@@ -872,6 +874,29 @@ classdef Plot < handle
             end
 
         end
+
+        % Added by Protik
+        function set.LegendOrientation(self, LegendOrientation)
+            if isempty(self.hlegend)
+                self.hlegend = self.findLegendHandle();
+            end
+            
+            if ~isempty(self.hlegend)
+                set(self.hlegend, 'Orientation', LegendOrientation);
+            end
+        end
+        function LegendOrientation = get.LegendOrientation(self)
+            LegendOrientation = [];
+            if isempty(self.hlegend)
+                self.hlegend = self.findLegendHandle();
+            end
+            
+            if ~isempty(self.hlegend)
+                LegendOrientation = get(self.hlegend, 'Orientation');
+            end
+
+        end
+        % finished by Protik
         
         function set.Title(self, Title)
             set(self.htitle, 'String', Title);
