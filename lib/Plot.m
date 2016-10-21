@@ -75,6 +75,7 @@ classdef Plot < handle
 %   LegendBox:    bounding box of legend: 'on'/'off'; default: 'off'
 %   LegendBoxColor: color of the bounding box of legend; default: 'none'
 %   LegendTextColor: color of the legend text; default: [0,0,0]
+%   LegendEdgeColor: color of the legend edges; default: [0,0,0]
 %   LegendLoc:    'NorthEast', ..., 'SouthWest': legend location
 %   LegendOrientation:  'horizontal' or 'vertical: 'Orientation of the legend; default: 'vertical'
 %   Title:        plot title, string
