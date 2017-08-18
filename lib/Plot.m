@@ -1004,7 +1004,7 @@ classdef Plot < handle
         end
         
         function h = findLegendHandle(self)
-            h = findobj(self.hfig,'Type','axes','Tag','legend');
+            h = findobj(self.hfig,'Type','legend');
         end
     end
 end
