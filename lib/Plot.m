@@ -331,8 +331,10 @@ classdef Plot < handle
                     self.ydata{ip} = get(self.hp{ip},'YData');
                     self.zdata{ip} = get(self.hp{ip},'ZData');
                 end
-            catch e 
-                warning('Unable to get data from all axes: %s',e.message);
+            catch e
+                if ~isa(self.hp{ip}, 'matlab.graphics.chart.primitive.ErrorBar')
+                    warning('Unable to get data from all axes: %s',e.message);
+                end
             end
             
             % white background
