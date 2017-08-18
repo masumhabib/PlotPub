@@ -311,7 +311,14 @@ classdef Plot < handle
             end
             self.hp = tmp;
             
-            self.legendText = cell(self.N, 1);
+%             get the Legend handle and text
+            if ~isempty(self.haxes.Legend)
+                self.hlegend = self.haxes.Legend;
+                self.legendText = self.hlegend.String;
+            else
+                self.legendText = cell(self.N, 1);
+            end
+            
             try 
                 % get the self data
                 for ip = 1:self.N
