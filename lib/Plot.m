@@ -31,12 +31,12 @@ classdef Plot < handle
 %
 % Properties:
 %   BoxDim:       vector [width, height]: size of the axes box in inches; 
-%                 default: [6, 2.5]
+%                 default: [6, 3]
 %   ShowBox:      'on' = show or 'off' = hide bounding box
 %   FontName:     string: font name; default: 'Helvetica'
-%   FontSize:     integer; default: 26
+%   FontSize:     integer; default: 12
 %   LineWidth:    vector [width1, width2, ..]: element i changes the 
-%                 property of i-th dataset; default: 2
+%                 property of i-th dataset; default: 1.5
 %   LineStyle:    cell array {'style1', 'style2', ..}: element i changes 
 %                 the property of i-th dataset; default: '-'
 %   LineCount:    Number of plots (readonly)
