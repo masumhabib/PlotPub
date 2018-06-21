@@ -52,6 +52,7 @@ function h = setPlotProp2(hfig, opt)
 %   LegendBox:    bounding box of legend: 'on'/'off'; default: 'off'
 %   LegendBoxColor: color of the bounding box of legend; default: 'none'
 %   LegendTextColor: color of the legend text; default: [0,0,0]
+%   LegendEdgeColor: color of the legend edges; default: [0,0,0]
 %   LegendLoc:    'NorthEast', ..., 'SouthWest': legend location
 %   Resolution:   Resolution (dpi) for bitmapped file. Default:600.
 %   HoldLines:    true/false. true == only modify axes settings, do not touch plot lines/surfaces. Default false.
