@@ -485,6 +485,8 @@ if isfield(opt, 'FileName')
         print(hfig, '-dpng', '-opengl', sprintf('-r%d',Resolution), opt.FileName);
     elseif strcmpi(fileType, 'tiff') 
         print(hfig, '-dtiff', '-opengl', sprintf('-r%d',Resolution), opt.FileName);
+    elseif strcmpi(fileType, 'emf')
+        print(hfig, '-dmeta', sprintf('-r%d',Resolution), opt.FileName); 
     else
         err = MException('', ...
             '=====> ERROR: File type %s is not supported. ', fileType);
