@@ -509,12 +509,22 @@ classdef Plot < handle
         function set.Colors(self, Colors)
             if self.holdLines == false
                 for ii=1:self.N   
+                    
+                    % Store the colour we're about to set
                     if ii > size(Colors)
                        self.colors{ii} = Colors{end};
                     else
                        self.colors{ii} = Colors{ii};
                     end
-                    set(self.hp{ii}, 'Color', self.colors{ii});
+                    
+                    % Set the primary color
+                    if isa(self.hp{ii}, 'matlab.graphics.chart.primitive.Area')
+                        set(self.hp{ii}, 'FaceColor', self.colors{ii});
+                    else
+                        set(self.hp{ii}, 'Color', self.colors{ii});
+                    end
+                    
+                    % Set for markers too if they exist
                     if ~isempty(self.hm{ii})
                         set(self.hm{ii}, 'Color', self.colors{ii}, 'MarkerFaceColor' , self.colors{ii});
                     end
