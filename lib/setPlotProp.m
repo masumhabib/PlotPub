@@ -88,27 +88,30 @@ ShowBox = 'on';
 FontName = 'Arial';
 FontSize = 20;
 LineWidth = 2.5*ones(1, N);
-LineStyle = {};
-for ii = 1:N
-    LineStyle{ii} = '-';
-end
-Markers = {};
-for ii = 1:N
-    Markers{ii} = 'None';
-end
+% LineStyle = {};
+% for ii = 1:N
+%     LineStyle{ii} = '-';
+% end
+LineStyle = {hp.LineStyle}; 
+% Markers = {};
+% for ii = 1:N
+%     Markers{ii} = 'None';
+% end
+Markers = {hp.Marker}; 
 MarkerSpacing = zeros(size(hp));
-Colors = [
-      0.16,     0.44,    1.00;
-      0.93,     0.00,    0.00;
-      0.00,     0.57,    0.00;
-      0.17,     0.17,    0.17;
-      0.44,     0.00,    0.99;
-      1.00,     0.50,    0.10;
-      0.75,     0.00,    0.75;
-      0.50,     0.50,    0.50;
-      0.50,     0.57,    0.00;
-      0.00,     0.00,    0.00;
-      ];
+% Colors = [
+%       0.16,     0.44,    1.00;
+%       0.93,     0.00,    0.00;
+%       0.00,     0.57,    0.00;
+%       0.17,     0.17,    0.17;
+%       0.44,     0.00,    0.99;
+%       1.00,     0.50,    0.10;
+%       0.75,     0.00,    0.75;
+%       0.50,     0.50,    0.50;
+%       0.50,     0.57,    0.00;
+%       0.00,     0.00,    0.00;
+%       ];
+Colors = reshape([hp.Color], 3, [])';
 XMinorTick = 'on';
 YMinorTick = 'on';
 ZMinorTick = 'on';

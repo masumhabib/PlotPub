@@ -31,12 +31,12 @@ classdef Plot < handle
 %
 % Properties:
 %   BoxDim:       vector [width, height]: size of the axes box in inches; 
-%                 default: [6, 2.5]
+%                 default: [6, 3]
 %   ShowBox:      'on' = show or 'off' = hide bounding box
 %   FontName:     string: font name; default: 'Helvetica'
-%   FontSize:     integer; default: 26
+%   FontSize:     integer; default: 12
 %   LineWidth:    vector [width1, width2, ..]: element i changes the 
-%                 property of i-th dataset; default: 2
+%                 property of i-th dataset; default: 1.5
 %   LineStyle:    cell array {'style1', 'style2', ..}: element i changes 
 %                 the property of i-th dataset; default: '-'
 %   LineCount:    Number of plots (readonly)
@@ -99,21 +99,21 @@ classdef Plot < handle
             plot.BoxDim          = [6, 3];  
             plot.ShowBox         = 'on';
             plot.FontName        = 'Arial'; 
-            plot.FontSize        = 20;
-            plot.LineWidth       = 2.5;
-            plot.LineStyle       = '-'; 
-            plot.Colors          = {
-                                    [ 0.16,     0.44,    1.00 ],...
-                                    [ 0.93,     0.00,    0.00 ],...
-                                    [ 0.00,     0.57,    0.00 ],...
-                                    [ 0.17,     0.17,    0.17 ],...
-                                    [ 0.44,     0.00,    0.99 ],...
-                                    [ 1.00,     0.50,    0.10 ],...
-                                    [ 0.75,     0.00,    0.75 ],...
-                                    [ 0.50,     0.50,    0.50 ],...
-                                    [ 0.50,     0.57,    0.00 ],...
-                                    [ 0.00,     0.00,    0.00 ]
-                                   };
+            plot.FontSize        = 12;
+            plot.LineWidth       = 1.5;
+            % plot.LineStyle       = '-'; 
+            % plot.Colors          = {
+            %                         [ 0.16,     0.44,    1.00 ],...
+            %                         [ 0.93,     0.00,    0.00 ],...
+            %                         [ 0.00,     0.57,    0.00 ],...
+            %                         [ 0.17,     0.17,    0.17 ],...
+            %                         [ 0.44,     0.00,    0.99 ],...
+            %                         [ 1.00,     0.50,    0.10 ],...
+            %                         [ 0.75,     0.00,    0.75 ],...
+            %                         [ 0.50,     0.50,    0.50 ],...
+            %                         [ 0.50,     0.57,    0.00 ],...
+            %                         [ 0.00,     0.00,    0.00 ]
+            %                        };
             
             plot.AxisColor       = [0.0 0.0 0.0];
             plot.AxisLineWidth   = 1.5;
@@ -129,7 +129,7 @@ classdef Plot < handle
             plot.LegendBoxColor  = [1,1,1];
             plot.LegendTextColor = [0,0,0];
             plot.MarkerSpacing   = 5;
-            plot.Markers         = '';            
+            % plot.Markers         = '';            
 
             plot.Resolution      = 600;
         end
@@ -918,7 +918,11 @@ classdef Plot < handle
         end
         
         % save to disk
-        function export(self, FileName)
+        function FileName = export(self, FileName)
+            if ~exist('FileName', 'var')
+                FileName = [tempname, '.png']; 
+            end 
+
             fileType = strread(FileName, '%s', 'delimiter', '.');
             fileType = fileType(end);
 
