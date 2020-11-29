@@ -30,8 +30,8 @@ classdef Plot < handle
 %   changes.
 %
 % Properties:
-%   BoxDim:       vector [width, height]: size of the axes box in inches; 
-%                 default: [6, 3]
+%   BoxDim:       vector [width, height]: size of the axes box in current unit; 
+%                 default: [6, 2.5] inches
 %   ShowBox:      'on' = show or 'off' = hide bounding box
 %   FontName:     string: font name; default: 'Helvetica'
 %   FontSize:     integer; default: 12
@@ -82,6 +82,8 @@ classdef Plot < handle
 %   Resolution:   Resolution (dpi) for bitmapped file. Default:600.
 %   HoldLines:    true/false. true == only modify axes settings, do not 
 %                 touch plot lines/surfaces. Default false.
+%   Units:        units used for dimention measurements
+%   Interpreter:  interpreter used for labels and title
 %
 %
 % Written by: K M Masum Habib (http://masumhabib.com)
@@ -96,6 +98,7 @@ classdef Plot < handle
     methods (Hidden, Access = private)
         function setDefaultProperties(plot)
             % Default properties. Change to your taste.
+            plot.Units           = 'inches';
             plot.BoxDim          = [6, 3];  
             plot.ShowBox         = 'on';
             plot.FontName        = 'Arial'; 
@@ -129,9 +132,11 @@ classdef Plot < handle
             plot.LegendBoxColor  = [1,1,1];
             plot.LegendTextColor = [0,0,0];
             plot.MarkerSpacing   = 5;
-            % plot.Markers         = '';            
+
+            plot.Markers         = '';            
 
             plot.Resolution      = 600;
+            plot.Interpreter     = 'tex';
         end
     end
 
@@ -185,6 +190,8 @@ classdef Plot < handle
         LegendLoc    
         LegendOrientation
         Title         
+        Units
+        Interpreter
     end
     
     % independent public properties
@@ -312,7 +319,14 @@ classdef Plot < handle
             end
             self.hp = tmp;
             
-            self.legendText = cell(self.N, 1);
+%             get the Legend handle and text
+            if ~isempty(self.haxes.Legend)
+                self.hlegend = self.haxes.Legend;
+                self.legendText = self.hlegend.String;
+            else
+                self.legendText = cell(self.N, 1);
+            end
+            
             try 
                 % get the self data
                 for ip = 1:self.N
@@ -320,13 +334,14 @@ classdef Plot < handle
                     self.ydata{ip} = get(self.hp{ip},'YData');
                     self.zdata{ip} = get(self.hp{ip},'ZData');
                 end
-            catch e 
-                warning('Unable to get data from all axes: %s',e.message);
+            catch e
+                if ~isa(self.hp{ip}, 'matlab.graphics.chart.primitive.ErrorBar')
+                    warning('Unable to get data from all axes: %s',e.message);
+                end
             end
             
-            % set dimension unit
-            set(self.hfig, 'Units', 'inches', 'Color', [1,1,1]);
-            set(self.haxes,'Units', 'inches');
+            % white background
+            set(self.hfig, 'Color', [1,1,1]);
             
             % apply default properties
             self.setDefaultProperties()            
@@ -909,6 +924,36 @@ classdef Plot < handle
         end
         % finished by Protik
         
+        % Added by Charles
+        function set.Units(self, Units)
+            set(self.hfig, 'Units', Units);
+            set(self.haxes,'Units', Units);
+        end
+        function Units = get.Units(self)
+            Units = get(self.hfig, 'Units');
+        end
+        function set.Interpreter(self, newInterpreter)
+            set(self.htitle,'Interpreter', newInterpreter);
+            
+            set(self.hxlabel,'Interpreter', newInterpreter);
+            set(self.hylabel,'Interpreter', newInterpreter);
+            set(self.hzlabel,'Interpreter', newInterpreter);
+            
+            set(self.haxes, 'TickLabelInterpreter', newInterpreter);
+            
+            if isempty(self.hlegend)
+                self.hlegend = self.findLegendHandle();
+            end
+            
+            if ~isempty(self.hlegend)
+                set(self.hlegend, 'Interpreter', newInterpreter);
+            end
+        end
+        function currentInterpreter = get.Interpreter(self)
+            currentInterpreter = get(self.htitle, 'Interpreter');
+        end
+        % Finished by Charles
+        
         function set.Title(self, Title)
             set(self.htitle, 'String', Title);
             self.adjustBoxDim();
@@ -960,8 +1005,10 @@ classdef Plot < handle
             % set the box size
             set(self.haxes, 'Position', BoxPos);
             % get the monitor size
-            set(0, 'Units', 'inch');
+            oldGlobalUnit = get(0, 'Units');
+            set(0, 'Units', self.Units);
             monitorPos = get(0,'MonitorPositions');
+            
             % put the figure at the middle of the monitor
             pos = [monitorPos(1, 3)/2-self.boxDim(1)/2, monitorPos(1, 4)/2-self.boxDim(2)/2];
             outerpos = get(self.haxes, 'OuterPosition');
@@ -970,11 +1017,13 @@ classdef Plot < handle
                 set(self.hfig, 'Position', [pos(1), pos(2), outerpos(3), outerpos(4)]);
             end
             % for paper position in the eps
-            set(self.hfig, 'PaperPositionMode', 'auto');            
+            set(self.hfig, 'PaperPositionMode', 'auto');     
+            
+            set(0, 'Units', oldGlobalUnit);
         end
         
         function h = findLegendHandle(self)
-            h = findobj(self.hfig,'Type','axes','Tag','legend');
+            h = findobj(self.hfig,'Type','legend');
         end
     end
 end
