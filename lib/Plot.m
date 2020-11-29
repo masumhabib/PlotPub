@@ -34,9 +34,9 @@ classdef Plot < handle
 %                 default: [6, 2.5] inches
 %   ShowBox:      'on' = show or 'off' = hide bounding box
 %   FontName:     string: font name; default: 'Helvetica'
-%   FontSize:     integer; default: 26
+%   FontSize:     integer; default: 12
 %   LineWidth:    vector [width1, width2, ..]: element i changes the 
-%                 property of i-th dataset; default: 2
+%                 property of i-th dataset; default: 1.5
 %   LineStyle:    cell array {'style1', 'style2', ..}: element i changes 
 %                 the property of i-th dataset; default: '-'
 %   LineCount:    Number of plots (readonly)
@@ -75,6 +75,7 @@ classdef Plot < handle
 %   LegendBox:    bounding box of legend: 'on'/'off'; default: 'off'
 %   LegendBoxColor: color of the bounding box of legend; default: 'none'
 %   LegendTextColor: color of the legend text; default: [0,0,0]
+%   LegendEdgeColor: color of the legend edges; default: [0,0,0]
 %   LegendLoc:    'NorthEast', ..., 'SouthWest': legend location
 %   LegendOrientation:  'horizontal' or 'vertical: 'Orientation of the legend; default: 'vertical'
 %   Title:        plot title, string
@@ -101,21 +102,21 @@ classdef Plot < handle
             plot.BoxDim          = [6, 3];  
             plot.ShowBox         = 'on';
             plot.FontName        = 'Arial'; 
-            plot.FontSize        = 20;
-            plot.LineWidth       = 2.5;
-            plot.LineStyle       = '-'; 
-            plot.Colors          = {
-                                    [ 0.16,     0.44,    1.00 ],...
-                                    [ 0.93,     0.00,    0.00 ],...
-                                    [ 0.00,     0.57,    0.00 ],...
-                                    [ 0.17,     0.17,    0.17 ],...
-                                    [ 0.44,     0.00,    0.99 ],...
-                                    [ 1.00,     0.50,    0.10 ],...
-                                    [ 0.75,     0.00,    0.75 ],...
-                                    [ 0.50,     0.50,    0.50 ],...
-                                    [ 0.50,     0.57,    0.00 ],...
-                                    [ 0.00,     0.00,    0.00 ]
-                                   };
+            plot.FontSize        = 12;
+            plot.LineWidth       = 1.5;
+            % plot.LineStyle       = '-'; 
+            % plot.Colors          = {
+            %                         [ 0.16,     0.44,    1.00 ],...
+            %                         [ 0.93,     0.00,    0.00 ],...
+            %                         [ 0.00,     0.57,    0.00 ],...
+            %                         [ 0.17,     0.17,    0.17 ],...
+            %                         [ 0.44,     0.00,    0.99 ],...
+            %                         [ 1.00,     0.50,    0.10 ],...
+            %                         [ 0.75,     0.00,    0.75 ],...
+            %                         [ 0.50,     0.50,    0.50 ],...
+            %                         [ 0.50,     0.57,    0.00 ],...
+            %                         [ 0.00,     0.00,    0.00 ]
+            %                        };
             
             plot.AxisColor       = [0.0 0.0 0.0];
             plot.AxisLineWidth   = 1.5;
@@ -131,7 +132,9 @@ classdef Plot < handle
             plot.LegendBoxColor  = [1,1,1];
             plot.LegendTextColor = [0,0,0];
             plot.MarkerSpacing   = 5;
+
             plot.Markers         = '';            
+
             plot.Resolution      = 600;
             plot.Interpreter     = 'tex';
         end
@@ -521,12 +524,22 @@ classdef Plot < handle
         function set.Colors(self, Colors)
             if self.holdLines == false
                 for ii=1:self.N   
+                    
+                    % Store the colour we're about to set
                     if ii > size(Colors)
                        self.colors{ii} = Colors{end};
                     else
                        self.colors{ii} = Colors{ii};
                     end
-                    set(self.hp{ii}, 'Color', self.colors{ii});
+                    
+                    % Set the primary color
+                    if isa(self.hp{ii}, 'matlab.graphics.chart.primitive.Area')
+                        set(self.hp{ii}, 'FaceColor', self.colors{ii});
+                    else
+                        set(self.hp{ii}, 'Color', self.colors{ii});
+                    end
+                    
+                    % Set for markers too if they exist
                     if ~isempty(self.hm{ii})
                         set(self.hm{ii}, 'Color', self.colors{ii}, 'MarkerFaceColor' , self.colors{ii});
                     end
@@ -950,7 +963,11 @@ classdef Plot < handle
         end
         
         % save to disk
-        function export(self, FileName)
+        function FileName = export(self, FileName)
+            if ~exist('FileName', 'var')
+                FileName = [tempname, '.png']; 
+            end 
+
             fileType = strread(FileName, '%s', 'delimiter', '.');
             fileType = fileType(end);
 
